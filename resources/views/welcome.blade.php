@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Git Flow Greatings New
+                    laravel from me: how are you?
                 </div>
 
                 <div class="links">
