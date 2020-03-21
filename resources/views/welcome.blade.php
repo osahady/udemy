@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Git Flow Greatings
+                    Git Flow Greatings New
                 </div>
 
                 <div class="links">
