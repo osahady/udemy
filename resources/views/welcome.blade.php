@@ -82,6 +82,7 @@
             <div class="content">
                 <div class="title m-b-md">
                     laravel from me: how are you?
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatum, eius?</p>
                 </div>
 
                 <div class="links">
