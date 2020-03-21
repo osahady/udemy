@@ -80,9 +80,14 @@
             @endif
 
             <div class="content">
+<<<<<<< HEAD
                 <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora asperiores commodi doloribus excepturi distinctio natus reiciendis, vero ratione, saepe facilis at quaerat? Tempora blanditiis veniam accusamus ducimus facere id iure.</p>
                 <div class="title m-b-md text-center">
                     Git Flow Greatings New
+=======
+                <div class="title m-b-md">
+                    laravel from me: how are you?
+>>>>>>> 2517b93638bdd3baef7514211303c40fbc24b2ee
                 </div>
 
                 <div class="links">
