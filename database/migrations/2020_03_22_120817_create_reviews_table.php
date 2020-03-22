@@ -14,8 +14,8 @@ class CreateReviewsTable extends Migration
     public function up()
     {
         Schema::create('reviews', function (Blueprint $table) {
-            $table->unsignedBigInteger('enrollment_id');
-            $table->integer('stars')->nullable();
+            $table->unsignedBigInteger('enrollment_id')->unique();
+            $table->unsignedtinyInteger('stars')->length(2)->default(0);
             $table->text('content')->nullable();
             $table->timestamps();
 
