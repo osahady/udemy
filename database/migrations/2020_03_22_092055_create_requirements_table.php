@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFbAnswersTable extends Migration
+class CreateRequirementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateFbAnswersTable extends Migration
      */
     public function up()
     {
-        Schema::create('fb_answers', function (Blueprint $table) {
+        Schema::create('requirements', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('fb_question_id');
-            $table->string('answer');
+            $table->unsignedBigInteger('course_id');
+            $table->text('content')->nullable();
 
             $table->timestamps();
 
-            $table->foreign('fb_question_id')->references('id')->on('fb_questions')->onDelete('CASCADE');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('CASCADE');
         });
     }
 
@@ -31,6 +31,6 @@ class CreateFbAnswersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fb_answers');
+        Schema::dropIfExists('requirements');
     }
 }
