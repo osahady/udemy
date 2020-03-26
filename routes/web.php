@@ -21,3 +21,7 @@ Route::resource('enrollemnts', 'EnrollmentController')->except('show', 'edit', '
 Route::resource('courses', 'CourseController');
 Route::resource('comments', 'CommentController')->except('show');
 
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
