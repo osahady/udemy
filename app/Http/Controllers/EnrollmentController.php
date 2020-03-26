@@ -14,7 +14,7 @@ class EnrollmentController extends Controller
      */
     public function index()
     {
-        //
+        return 'Enrollment Index';
     }
 
     /**
@@ -24,7 +24,7 @@ class EnrollmentController extends Controller
      */
     public function create()
     {
-        //
+        return 'Enrollment Create';
     }
 
     /**
@@ -35,7 +35,7 @@ class EnrollmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return 'Enrollment Store';
     }
 
 
@@ -48,6 +48,6 @@ class EnrollmentController extends Controller
      */
     public function destroy(Enrollment $enrollment)
     {
-        //
+        return 'Enrollment Destroy';
     }
 }

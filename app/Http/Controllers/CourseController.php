@@ -15,7 +15,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
+        return 'Course Index';
     }
 
     /**
@@ -25,7 +25,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        return 'Course Create';
     }
 
     /**
@@ -36,7 +36,7 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return 'Course Store';
     }
 
     /**
@@ -47,7 +47,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        return 'Course Show';
     }
 
     /**
@@ -58,7 +58,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        //
+        return 'Course Edit';
     }
 
     /**
@@ -70,7 +70,7 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+        return 'Course Update';
     }
 
     /**
@@ -81,16 +81,16 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        return 'Course Destroy';
     }
 
     public function listMyCreatedCourses(User $user)
     {
-
+        return 'Course ListMyCreated';
     }
 
     public function listMyEnrolledCourses(User $user)
     {
-
+        return 'Course ListMyEnrolled';
     }
 }

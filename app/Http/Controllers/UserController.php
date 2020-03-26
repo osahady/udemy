@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return 'User Index';
     }
 
     /**
@@ -24,7 +24,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return 'User Create';
     }
 
     /**
@@ -35,7 +35,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return 'User Store';
     }
 
     /**
@@ -46,7 +46,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return 'User Show';
     }
 
     /**
@@ -57,7 +57,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return 'User Edit';
     }
 
     /**
@@ -69,7 +69,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        return 'User Update';
     }
 
     /**
@@ -80,6 +80,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        return 'User Destroy';
     }
 }
