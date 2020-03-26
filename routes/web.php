@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
+Route::resource('users', 'UserController')->except('store');
+Route::resource('enrollemnts', 'EnrollmentController')->except('show', 'edit', 'update');
+Route::resource('courses', 'CourseController');
+Route::resource('comments', 'CommentController')->except('show');
 
-Route::get('/home', 'HomeController@index')->name('home');
