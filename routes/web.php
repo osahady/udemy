@@ -21,7 +21,7 @@ Route::get('/student/{user}/courses', 'CourseController@listMyEnrolledCourses')-
 Route::get('/teacher/{user}/courses', 'CourseController@listMyCreatedCourses')->name('teacher.courses');
 Route::resource('comments', 'CommentController')->except('index', 'show');
 Route::get('/comments/{lecture}/{course?}', 'CommentController@index')->name('current.lecture');
-Route::get('/comments/teacher/{teacher}', 'CommentController@commentsForTeacher')->name('comments.teacher');
+Route::get('/teacher/{teacher}/comments', 'CommentController@commentsForTeacher')->name('comments.teacher');
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');

@@ -80,6 +80,6 @@ class CommentController extends Controller
 
     public function commentsForTeacher(User $teacher)
     {
-        return 'all comments for a certain teacher'. "$teacher";
+        return 'all comments for a certain teacher'. $teacher;
     }
 }
