@@ -15,7 +15,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return 'Course Index';
+        return view('welcome', ['c' => 'List of courses']);
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,14 +12,17 @@
 |
 */
 
-Route::get('/', 'CourseController');
+Route::get('/', 'CourseController@index');
 
 Route::resource('users', 'UserController')->except('store');
-Route::resource('enrollemnts', 'EnrollmentController')->except('show', 'edit', 'update');
+Route::resource('enrollments', 'EnrollmentController')->except('show', 'edit', 'update');
 Route::resource('courses', 'CourseController');
-Route::resource('comments', 'CommentController')->except('show');
+Route::get('/student/{user}/courses', 'CourseController@listMyEnrolledCourses')->name('student.courses');
+Route::get('/teacher/{user}/courses', 'CourseController@listMyCreatedCourses')->name('teacher.courses');
+Route::resource('comments', 'CommentController')->except('index', 'show');
+Route::get('/comments/{lecture}/{course?}', 'CommentController@index')->name('current.lecture');
+Route::get('/comments/teacher/{teacher}', 'CommentController@commentsForTeacher')->name('comments.teacher');
 
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
 

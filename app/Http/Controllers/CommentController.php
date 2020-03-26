@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Lecture;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,12 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Lecture $lecture, bool $course = false)
     {
-        return 'Comment Index';
+        if($course)
+        return 'Comment Index for the course';
+        else
+        return 'Comment of current lecture';
     }
 
     /**
@@ -74,8 +78,8 @@ class CommentController extends Controller
         return 'Comment Destroy';
     }
 
-    public function listCommentsByTeacher(User $user)
+    public function commentsForTeacher(User $teacher)
     {
-        return 'Comment ListCommentsByTeacher';
+        return 'all comments for a certain teacher'. "$teacher";
     }
 }
