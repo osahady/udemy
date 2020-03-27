@@ -13,10 +13,9 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         $roles = collect(['admin', 'student', 'teacher', 'guest']);
-
-        $roles->each(function($roleName){
+        $roles->each(function($r){
             $role = new Role();
-            $role->name = $roleName;
+            $role->name = $r;
             $role->save();
         });
     }

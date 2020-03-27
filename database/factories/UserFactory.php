@@ -2,7 +2,6 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
@@ -17,7 +16,7 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+$factory->define(App\User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
@@ -28,7 +27,7 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(User::class, 'osama', function (Faker $faker) {
+$factory->state(App\User::class, 'osama', function (Faker $faker) {
     return [
         'name' => 'Osama',
         'email' => 'osahady@gmail.com',
@@ -36,7 +35,7 @@ $factory->state(User::class, 'osama', function (Faker $faker) {
 });
 
 
-$factory->state(User::class, 'obada', function (Faker $faker) {
+$factory->state(App\User::class, 'obada', function (Faker $faker) {
     return [
         'name' => 'Obada',
         'email' => 'o@o.com',
