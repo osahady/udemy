@@ -16,7 +16,9 @@ class DatabaseSeeder extends Seeder
             CategoriesTableSeeder::class,
             UsersTableSeeder::class,
             CoursesTableSeeder::class,
-            SectionsTableSeeder::class
+            SectionsTableSeeder::class,
+            // EnrollmentsTableSeeder::class,
+            LecturesTableSeeder::class
         ]);
 
         
