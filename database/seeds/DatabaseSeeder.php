@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             CoursesTableSeeder::class,
             SectionsTableSeeder::class,
-            // EnrollmentsTableSeeder::class,
+            EnrollmentsTableSeeder::class,
             LecturesTableSeeder::class
         ]);
     }
