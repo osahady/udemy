@@ -20,8 +20,12 @@ class DatabaseSeeder extends Seeder
             EnrollmentsTableSeeder::class,
             LecturesTableSeeder::class,
             RoleUserTableSeeder::class,
+<<<<<<< HEAD
             FbQestionsTableSeeder::class
  
+=======
+            FbQestionsTableSeeder::class,
+>>>>>>> 5a7d025c8e507d394990d390bd21a337b1713487
         ]);
     }
 }
