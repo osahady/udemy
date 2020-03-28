@@ -14,7 +14,7 @@ class LecturesTableSeeder extends Seeder
     public function run()
     {
         $sections = Section::all();
-        factory(Lecture::class, 1000)->make()->each(function($lecture) use($sections){
+        factory(Lecture::class, 200)->make()->each(function($lecture) use($sections){
             $lecture->section_id = $sections->random()->id;
             $lecture->save();
         });
