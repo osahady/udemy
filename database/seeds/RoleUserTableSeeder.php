@@ -28,5 +28,6 @@ class RoleUserTableSeeder extends Seeder
             }
 
         });
+        
     }
 }
