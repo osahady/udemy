@@ -14,4 +14,9 @@ class Lecture extends Model
     {
         return $this->hasMany('App\Comments');
     }
+    
+    public function section()
+    {
+        return $this->belongsTo('App\Section');
+    }
 }

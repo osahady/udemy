@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             RoleUserTableSeeder::class,
             FbQestionsTableSeeder::class,
             RoleUserTableSeeder::class
- 
+
         ]);
     }
 }

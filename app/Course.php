@@ -14,4 +14,14 @@ class Course extends Model
     {
         return $this->belongsTo('App\Category');
     }
+    
+    public function sections()
+    {
+        return $this->hasMany('App\Section');
+    }
+
+    public function requirements()
+    {
+        return $this->hasMany('App\Requirement');
+    }
 }
