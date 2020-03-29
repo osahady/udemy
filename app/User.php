@@ -54,4 +54,14 @@ class User extends Authenticatable
                     ->withTimestamps() // Adding timestamps columns to pivot table
                     ->withPivot('completed', 'position'); // Adding intermediate custom columns
     }
+
+    public function enrolledCourses()
+    {
+        return $this->hasMany('App\Enrollment', 'student_id');
+    }
+
+    public function createdCourses()
+    {
+        return $this->hasMany('App\Coures', 'teacher_id');
+    }
 }

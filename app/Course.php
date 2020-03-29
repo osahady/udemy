@@ -29,4 +29,17 @@ class Course extends Model
     {
         return $this->morphOne('App\Image', 'imageable');
     }
+
+    public function enrollments()
+    {
+        return $this->hasMany('App\Enrollment');
+    }
+
+    public function teacher()
+    {
+        return $this->belongsTo('App\User'); // by convention the name of the foregin
+        //key is: name of the relationship mehtod (teacher) _ owner key 
+        // which is the primary key of the user that is id
+        // <=> teacher_id
+    }
 }
