@@ -18,11 +18,11 @@ class Comment extends Model
     //reflexive relation
     public function ansewrs()
     {
-        return $this->hasMany('App\Comment', 'comment_id');
+        return $this->hasMany('App\Comment'); //owning model _id (convetion) <=> comment_id
     }
 
     public function question()
     {
-        return $this->belongsTo('App\Comment', 'comment_id');
+        return $this->belongsTo('App\Comment', 'comment_id'); //name of relationship method _ primary key  <=> question_id
     }
 }
