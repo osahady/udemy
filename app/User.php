@@ -46,4 +46,12 @@ class User extends Authenticatable
     {
         return $this->morphOne('App\Image', 'imageable');
     }
+
+    public function lectures()
+    {
+        return $this->belongsToMany('App\Lecture', 'views') // overriding convention (lecture_user)
+                    ->as('view') // Rename (pivot attribute name)
+                    ->withTimestamps() // Adding timestamps columns to pivot table
+                    ->withPivot('completed', 'position'); // Adding intermediate custom columns
+    }
 }
