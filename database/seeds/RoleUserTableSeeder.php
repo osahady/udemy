@@ -15,23 +15,17 @@ class RoleUserTableSeeder extends Seeder
     public function run()
     {
         $users = User::all();
-        $users->each(function ($user){
-            if ($user->id == 1) {
-                DB::table('role_user')->insert([
-                    'user_id' => $user->id,
-                    'role_id' => 1
-                ]);
-            } elseif($user->id == 2){
-                DB::table('role_user')->insert([
-                    'user_id' => $user->id,
-                    'role_id' => 3
-                ]);
-            } else {
-                DB::table('role_user')->insert([
-                    'user_id' => $user->id,
-                    'role_id' => rand(2,4),
-                ]);
+        $users->each(function($user){
+            switch ($user->id) {
+                case '1':
+                    # code...
+                    break;
+                
+                default:
+                    $user->roles()
+                    break;
             }
         });
+        
     }
 }
