@@ -16,7 +16,17 @@ class RoleUserTableSeeder extends Seeder
     {
         $users = User::all();
         $users->each(function ($user){
-            $user->roles()->sync([1,2]);
+            switch ($user->id) {
+                case 1:
+                case 2:
+                    $user->roles()->sync(1);
+                    break;
+
+                default:
+                $user->roles()->sync(rand(2,3));
+                    break;
+            }
+
         });
     }
 }
