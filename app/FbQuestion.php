@@ -14,4 +14,10 @@ class FbQuestion extends Model
     {
         return $this->hasMany('App\FbAnswer');
     }
+
+    public function enrollments()
+    {
+        return $this->belongsToMany('App\Enrollment')
+                    ->using('App\Feedback');
+    }
 }

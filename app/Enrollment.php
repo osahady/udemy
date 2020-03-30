@@ -25,4 +25,10 @@ class Enrollment extends Model
         return $this->belongsTo('App\User'); //the foreign key will be by convention
         //the name of the relationship method (student) _ primary key [student_id]
     }
+
+    public function fbQuestions()
+    {
+        return $this->belongsToMany('App\FbQuestion')
+                    ->using('App\Feedback');
+    }
 }
