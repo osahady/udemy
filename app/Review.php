@@ -6,5 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
-    //
+    protected $fillable = [
+        'stars', 'content'
+    ];
+    
+    public function enrollment()
+    {
+        return $this->belongsTo('App\Enrollment');
+    }
 }

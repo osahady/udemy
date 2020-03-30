@@ -16,9 +16,16 @@ class EnrollmentsTableSeeder extends Seeder
     {
         $users = User::all();
         $courses = Course::all();
-        factory(Enrollment::class, 100)->make()->each(function($enrollment) use($users, $courses){
-            $enrollment->user_id = $users->random()->id;
-            $enrollment->course_id = $courses->random()->id;
+        $enroll = [];
+
+        for ($i=0; $i < 200; $i++) {
+            $enroll[$users->random()->id . '-' . $courses->random()->id] = $i;
+        }
+        $enroll = array_keys($enroll);
+
+        factory(Enrollment::class, count($enroll))->make()->each(function($enrollment, $index) use($enroll){
+            $enrollment->user_id = substr($enroll[$index], 0, strpos($enroll[$index], '-'));
+            $enrollment->course_id = substr($enroll[$index], strpos($enroll[$index], '-') + 1);
             $enrollment->save();
         });
     }

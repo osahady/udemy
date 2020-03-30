@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'resume', 'locale'
     ];
 
     /**
@@ -36,4 +36,32 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function roles()
+    {
+        return $this->belongsToMany('App\Role');
+    }
+
+    public function image()
+    {
+        return $this->morphOne('App\Image', 'imageable');
+    }
+
+    public function lectures()
+    {
+        return $this->belongsToMany('App\Lecture', 'views') // overriding convention (lecture_user)
+                    ->as('view') // Rename (pivot attribute name)
+                    ->withTimestamps() // Adding timestamps columns to pivot table
+                    ->withPivot('completed', 'position'); // Adding intermediate custom columns
+    }
+
+    public function enrolledCourses()
+    {
+        return $this->hasMany('App\Enrollment', 'student_id');
+    }
+
+    public function createdCourses()
+    {
+        return $this->hasMany('App\Coures', 'teacher_id');
+    }
 }

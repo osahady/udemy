@@ -40,3 +40,15 @@ $factory->state(User::class, 'obada', function (Faker $faker) {
         'email' => 'o@o.com',
     ];
 });
+$factory->state(User::class, 'teacher', function (Faker $faker) {
+    return [
+        'name' => 'Teacher',
+        'email' => 't@t.com',
+    ];
+});
+$factory->state(User::class, 'student', function (Faker $faker) {
+    return [
+        'name' => 'Student',
+        'email' => 's@s.com',
+    ];
+});

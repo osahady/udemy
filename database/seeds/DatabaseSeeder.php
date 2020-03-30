@@ -17,10 +17,13 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             CoursesTableSeeder::class,
             SectionsTableSeeder::class,
-            // EnrollmentsTableSeeder::class,
-            LecturesTableSeeder::class
-        ]);
+            EnrollmentsTableSeeder::class,
+            LecturesTableSeeder::class,
+            RoleUserTableSeeder::class,
+            FbQestionsTableSeeder::class,
+            RoleUserTableSeeder::class
 
         
+        ]);
     }
 }

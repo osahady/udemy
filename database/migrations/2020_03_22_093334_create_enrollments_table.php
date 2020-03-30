@@ -16,7 +16,7 @@ class CreateEnrollmentsTable extends Migration
         Schema::create('enrollments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('course_id')->index();
-            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('student_id')->index();
             $table->string('reason')->nullable();
             $table->timestamps();
 
