@@ -18,6 +18,7 @@ class FbQuestion extends Model
     public function enrollments()
     {
         return $this->belongsToMany('App\Enrollment')
-                    ->using('App\Feedback');
+                    ->using('App\Feedback')
+                    ->withTimestamps();
     }
 }
