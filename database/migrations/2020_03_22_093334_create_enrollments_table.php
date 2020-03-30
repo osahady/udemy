@@ -20,9 +20,9 @@ class CreateEnrollmentsTable extends Migration
             $table->string('reason')->nullable();
             $table->timestamps();
 
-            $table->unique(['course_id', 'user_id']);
+            $table->unique(['course_id', 'student_id']);
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('CASCADE');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
+            $table->foreign('student_id')->references('id')->on('users')->onDelete('CASCADE');
         });
     }
 

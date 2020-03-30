@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Enrollment extends Model
 {
     protected $fillable = [
-        'reason', 'user_id', 'course_id'
+        'reason', 'student_id', 'course_id'
     ];
 
     public function review()

@@ -25,14 +25,14 @@ class EnrollmentsTableSeeder extends Seeder
         $enroll = array_keys($enroll);
 
         factory(Enrollment::class, count($enroll))->make()->each(function($enrollment, $index) use($enroll){
-            $enrollment->user_id = substr($enroll[$index], 0, strpos($enroll[$index], '-'));
+            $enrollment->student_id = substr($enroll[$index], 0, strpos($enroll[$index], '-'));
             $enrollment->course_id = substr($enroll[$index], strpos($enroll[$index], '-') + 1);
             $enrollment->save();
         });
 
         $enrollments = Enrollment::all();
-        factory(Review::class, count($enroll) - rand(0, count($enroll)))->make()->each(function ($review) use ($enrollments) {
-            $review->enrollment_id = $enrollments->random()->id;
+        factory(Review::class, count($enroll) - rand(0, count($enroll)))->make()->each(function ($review, $index) use ($enrollments) {
+            $review->enrollment_id = $enrollments[$index]->id;
             $review->save();
         });
     }

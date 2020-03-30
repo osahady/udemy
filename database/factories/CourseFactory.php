@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Course::class, function (Faker $faker) {
     return [
-        'user_id' => factory(User::class)->create(),
+        'teacher_id' => factory(User::class)->create(),
         'category_id' => rand(1,9) ,
         'title' => $faker->sentence(10),
         'description' => $faker->paragraphs(3, true),
