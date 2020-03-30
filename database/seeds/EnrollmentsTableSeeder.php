@@ -2,6 +2,7 @@
 
 use App\Course;
 use App\Enrollment;
+use App\Review;
 use App\User;
 use Illuminate\Database\Seeder;
 
@@ -27,6 +28,12 @@ class EnrollmentsTableSeeder extends Seeder
             $enrollment->user_id = substr($enroll[$index], 0, strpos($enroll[$index], '-'));
             $enrollment->course_id = substr($enroll[$index], strpos($enroll[$index], '-') + 1);
             $enrollment->save();
+        });
+
+        $enrollments = Enrollment::all();
+        factory(Review::class, count($enroll) - rand(0, count($enroll)))->make()->each(function ($review) use ($enrollments) {
+            $review->enrollment_id = $enrollments->random()->id;
+            $review->save();
         });
     }
 }
