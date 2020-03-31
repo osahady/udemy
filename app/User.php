@@ -47,6 +47,11 @@ class User extends Authenticatable
         return $this->morphOne('App\Image', 'imageable');
     }
 
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
+
     public function views()
     {
         return $this->belongsToMany('App\Lecture', 'views') // overriding convention (lecture_user)

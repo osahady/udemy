@@ -15,6 +15,11 @@ class Comment extends Model
         return $this->belongsTo('App\Lecture');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
     //reflexive relation
     public function ansewrs()
     {
