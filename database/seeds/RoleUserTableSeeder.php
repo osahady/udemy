@@ -23,7 +23,7 @@ class RoleUserTableSeeder extends Seeder
                     break;
 
                 default:
-                $user->roles()->sync(rand(2,3));
+                    $user->roles()->sync(rand(2,3));
                     break;
             }
 

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             LecturesTableSeeder::class,
             RoleUserTableSeeder::class,
             FbQestionsTableSeeder::class,
+            FeedbackTableSeeder::class
         ]);
     }
 }

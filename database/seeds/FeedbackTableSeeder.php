@@ -16,7 +16,17 @@ class FeedbackTableSeeder extends Seeder
     {
         $enrollments = Enrollment::all();
         $questions = FbQuestion::all();
-
-        factory(Feedback::class)->create();
+        
+        for ($j=0; $j < count($enrollments); $j++) { 
+            $e = $enrollments[$j]->id;
+            for ($i=0; $i < rand(0, count($questions)); $i++) { 
+                $feedback = new Feedback();
+                $q = $questions[$i];
+                $feedback->enrollment_id = $e;
+                $feedback->fb_question_id = $q->id;
+                $feedback->fb_answer_id = $q->fbAnswers->random()->id;
+                $feedback->save();
+            } 
+        }
     }
 }
