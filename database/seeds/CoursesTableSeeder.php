@@ -14,7 +14,7 @@ class CoursesTableSeeder extends Seeder
      */
     public function run()
     {
-        $numCourses = 5;
+        $numCourses = 15;
         factory(Course::class, $numCourses)->create();
         $courses = Course::all();        
         factory(Requirement::class, 2*$numCourses)->make()->each(function ($requirement) use ($courses) {

@@ -15,7 +15,8 @@ class RoleUserTableSeeder extends Seeder
     public function run()
     {
         $users = User::all();
-        $users->each(function ($user){
+        $roles = Role::all();
+        $users->each(function ($user) use ($roles){
             switch ($user->id) {
                 case 1:
                 case 2:
@@ -23,7 +24,10 @@ class RoleUserTableSeeder extends Seeder
                     break;
 
                 default:
-                    $user->roles()->sync(rand(2,3));
+                    for ($i=0; $i < rand(1, count($roles)); $i++) { 
+                        $role = $roles->random()->id;
+                        $user->roles()->syncWithoutDetaching($role == 1 ? 2 : $role);
+                    }
                     break;
             }
 

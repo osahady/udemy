@@ -31,10 +31,5 @@ class ViewsTableSeeder extends Seeder
                 }
             }
         }
-
-        // $course = Course::find(1);
-        // foreach ($course->sections as $section) {
-        //         dump($section->id);
-        // }
     }
 }

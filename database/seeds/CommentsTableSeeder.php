@@ -16,6 +16,7 @@ class CommentsTableSeeder extends Seeder
     public function run()
     {
         $lectures = Lecture::all();
+        //storing questions of some students
         foreach ($lectures as $lecture) {
             if (rand(1, 5) > 3) {
                 $student = $lecture->section->course->enrollments->random()->student_id;
@@ -27,6 +28,7 @@ class CommentsTableSeeder extends Seeder
                 }
             }
         }
+        //storing answers for questions 
         $lectures = Lecture::has('comments')->get();
         foreach ($lectures as $lecture) {
             if (rand(1, 5) > 2) {
