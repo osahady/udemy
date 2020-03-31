@@ -1,5 +1,7 @@
 <?php
 
+use App\Course;
+use App\Enrollment;
 use App\Lecture;
 use App\User;
 use Illuminate\Database\Seeder;
@@ -13,22 +15,26 @@ class ViewsTableSeeder extends Seeder
      */
     public function run()
     {
-        $users = User::all();
-        $users->each(function ($user) {
-
-            foreach ($user->enrolledCourses as $course) {
-                dump($course->sections);
-                // foreach ($course->sections as $section) {
-                //     foreach ($section->lectures as $lecture) {
-                //         dump($lecture);
-                //     }
-                // }
+        $enrollments = Enrollment::all();
+        foreach ($enrollments as $enrollment) {
+            $course = $enrollment->course;
+            $student = $enrollment->student;
+            if (rand(1,5) > 2) {
+                foreach ($course->sections as $section) {
+                    if (rand(1,5) > 2) {
+                        foreach ($section->lectures as $lecture) {
+                            if (rand(1,5) > 2) {
+                                $lecture->views()->save($lecture, ['user_id' => $student->id, 'completed' => rand(0, 1)]);
+                            }
+                        }
+                    }
+                }
             }
-            dd('Hey');
-        });
+        }
 
-        // for ($i=0; $i < ; $i++) {
-
+        // $course = Course::find(1);
+        // foreach ($course->sections as $section) {
+        //         dump($section->id);
         // }
     }
 }

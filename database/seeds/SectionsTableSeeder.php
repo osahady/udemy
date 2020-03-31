@@ -14,9 +14,13 @@ class SectionsTableSeeder extends Seeder
     public function run()
     {
         $courses = Course::all();
-        factory(Section::class, count($courses) * 3)->make()->each(function($section) use ($courses){
-            $section->course_id = $courses->random()->id;
-            $section->save();
-        });
+        for ($i=0; $i < count($courses); $i++) { 
+            $course = $courses[$i];
+            for ($j=0; $j < rand(3, 10); $j++) { 
+                factory(Section::class)->create([
+                    'course_id' => $course->id
+                ]);
+            }
+        }
     }
 }
