@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\User;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,17 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+        //في حال تمَّ إرسال معامل دون تحديد نوعه سيتمُّ تلقائيًّا مثال ذلك
+        // Route::get('/persons/{user}', function($user){
+        //     return $user;
+        // });
+// |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        // Route::model('user', User::class);
+
+        // لتغيير جلب النموذج بحيث يتم احضاره عبر الاسم بدل الرقم 
+        // Route::bind('user', function ($value) {
+        //     return \App\User::where('name', $value)->firstOrFail();
+        // });
     }
 
     /**

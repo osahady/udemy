@@ -70,4 +70,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Coures', 'teacher_id');
     }
+
+    // public function getRouteKeyName ()
+    // {
+    //     return 'name';
+    // }
 }

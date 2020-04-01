@@ -86,11 +86,12 @@ class CourseController extends Controller
 
     public function listMyCreatedCourses(User $user)
     {
-        return 'Course ListMyCreated';
+        return $user;
     }
 
     public function listMyEnrolledCourses(User $user)
     {
-        return 'Course ListMyEnrolled';
+        // $u = User::find($user);
+        return $user;
     }
 }
