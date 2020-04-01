@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return 'User Index';
+        return User::all();
     }
 
     /**
@@ -46,7 +46,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return 'User Show';
+        return $user;
     }
 
     /**
@@ -57,7 +57,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return 'User Edit';
+        return $user;
     }
 
     /**
@@ -69,7 +69,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        return 'User Update';
+        return $user;
     }
 
     /**
@@ -80,6 +80,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        return 'User Destroy';
+        return $user;
     }
 }

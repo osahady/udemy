@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Course;
 use App\Lecture;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
@@ -16,10 +18,20 @@ class CommentController extends Controller
      */
     public function index(Lecture $lecture, bool $course = false)
     {
-        if($course)
-        return 'Comment Index for the course';
+        if($course){
+            $course = $lecture->section->course->id;
+            $str =  '
+                        SELECT `comments`.`id`, `sections`.`course_id` FROM `comments` 
+                        INNER JOIN `lectures` ON `comments`.`lecture_id` = `lectures`.`id`
+                        INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
+                        WHERE `sections`.`course_id` = ?
+                    ';
+
+            return count(DB::select($str, [$course]));
+        
+        }
         else
-        return 'Comment of current lecture';
+        return $lecture->comments;
     }
 
     /**
