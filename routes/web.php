@@ -22,6 +22,10 @@ Route::get('/teacher/{user}/courses', 'CourseController@listMyCreatedCourses')->
 Route::resource('comments', 'CommentController')->except('index', 'show');
 Route::get('/comments/{lecture}/{course?}', 'CommentController@index')->name('current.lecture');
 Route::get('/teacher/{teacher}/comments', 'CommentController@commentsForTeacher')->name('comments.teacher');
+Route::resource('lectures', 'LectureController');
+Route::resource('feedback', 'FeedbackController')->except('edit', 'update', 'destroy');
+Route::get('/student/{user}/feedback', 'FeedbackController@listStudentFeedback')->name('student.feedback');
+Route::get('/course/{course}/feedback', 'FeedbackController@listCourseFeedback')->name('course.feedback');
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
