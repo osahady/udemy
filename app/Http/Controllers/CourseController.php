@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Course;
+use App\Enrollment;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -15,7 +16,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return view('welcome', ['c' => 'List of courses']);
+        return Course::all();
     }
 
     /**
@@ -47,7 +48,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        return 'Course Show';
+        return $course;
     }
 
     /**
@@ -58,7 +59,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        return 'Course Edit';
+        return $course;
     }
 
     /**
@@ -86,12 +87,12 @@ class CourseController extends Controller
 
     public function listMyCreatedCourses(User $user)
     {
-        return $user;
+        return $user->createdCourses;
     }
 
     public function listMyEnrolledCourses(User $user)
     {
-        // $u = User::find($user);
-        return $user;
+        $courses = $user->enrolledCourses->pluck('course_id');
+        return Course::findMany($courses);
     }
 }
