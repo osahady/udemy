@@ -26,6 +26,10 @@ Route::resource('sections', 'SectionController');
 Route::resource('reviews', 'ReviewController')->except('edit', 'update', 'destroy');
 Route::get('student/{user}/reviews', 'ReviewController@listStudentReview')->name('student.reviews');
 Route::get('course/{course}/reviews', 'ReviewController@listCourseReview')->name('course.reviews');
+Route::resource('lectures', 'LectureController');
+Route::resource('feedback', 'FeedbackController')->except('edit', 'update', 'destroy');
+Route::get('/student/{user}/feedback', 'FeedbackController@listStudentFeedback')->name('student.feedback');
+Route::get('/course/{course}/feedback', 'FeedbackController@listCourseFeedback')->name('course.feedback');
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
