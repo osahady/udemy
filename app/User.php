@@ -68,7 +68,7 @@ class User extends Authenticatable
 
     public function createdCourses()
     {
-        return $this->hasMany('App\Coures', 'teacher_id');
+        return $this->hasMany('App\Course', 'teacher_id');
     }
 
     // public function getRouteKeyName ()

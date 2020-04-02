@@ -20,18 +20,16 @@ class CommentController extends Controller
     {
         if($course){
             $course = $lecture->section->course->id;
-            $str =  '
-                        SELECT `comments`.`id`, `sections`.`course_id` FROM `comments` 
-                        INNER JOIN `lectures` ON `comments`.`lecture_id` = `lectures`.`id`
-                        INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
-                        WHERE `sections`.`course_id` = ?
-                    ';
-
-            return count(DB::select($str, [$course]));
-        
+            $qyr = 
+            'SELECT `comments`.`id`, `sections`.`course_id` FROM `comments` 
+            INNER JOIN `lectures` ON `comments`.`lecture_id` = `lectures`.`id`
+            INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
+            WHERE `sections`.`course_id` = ?';
+            $courseComments = DB::select($qyr, [$course]);
+            return $courseComments;
         }
         else
-        return $lecture->comments;
+            return $lecture->comments;
     }
 
     /**
@@ -64,7 +62,7 @@ class CommentController extends Controller
      */
     public function edit(Comment $comment)
     {
-        return 'Comment Edit';
+        return $comment;
     }
 
     /**
@@ -92,6 +90,19 @@ class CommentController extends Controller
 
     public function commentsForTeacher(User $teacher)
     {
-        return 'all comments for a certain teacher'. $teacher;
+        if (count($teacher->createdCourses)) {
+        $qyr = 
+        'SELECT `comments`.`content`, `courses`.`title` as course, 
+        `lectures`.`id`, `comments`.`comment_id`
+        FROM `comments` 
+            INNER JOIN `lectures` ON `comments`.`lecture_id` = `lectures`.`id`
+            INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
+            INNER JOIN `courses` ON `sections`.`course_id` = `courses`.`id`
+        WHERE `courses`.`teacher_id` = ? AND `comments`.`comment_id` IS NULL';
+
+        return DB::select($qyr, [$teacher->id]);
+        }else{
+            return 'he is a student';
+        }
     }
 }
