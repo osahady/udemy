@@ -14,7 +14,7 @@
 
 Route::get('/', 'CourseController@index');
 
-Route::resource('users', 'UserController')->except('store');
+Route::resource('users', 'UserController')->except('store'); //لأنه يتم تسجيل المستخدم عبر عملية تسجيل الدخول
 Route::resource('enrollments', 'EnrollmentController')->except('show', 'edit', 'update');
 Route::resource('courses', 'CourseController');
 Route::get('/student/{user}/courses', 'CourseController@listMyEnrolledCourses')->name('student.courses');

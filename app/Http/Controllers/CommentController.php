@@ -21,9 +21,10 @@ class CommentController extends Controller
         if($course){
             $course = $lecture->section->course->id;
             $qyr = 
-            'SELECT `comments`.`id`, `sections`.`course_id` FROM `comments` 
-            INNER JOIN `lectures` ON `comments`.`lecture_id` = `lectures`.`id`
-            INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
+            'SELECT `comments`.`id`, `sections`.`course_id` 
+            FROM `comments` 
+                INNER JOIN `lectures` ON `comments`.`lecture_id` = `lectures`.`id`
+                INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
             WHERE `sections`.`course_id` = ?';
             $courseComments = DB::select($qyr, [$course]);
             return $courseComments;
