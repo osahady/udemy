@@ -1,6 +1,6 @@
 @extends('website.layout')
 
-@section('content')
+@section('main-content')
     <div class="row">
         <div class="col-8">
             @yield('content')
