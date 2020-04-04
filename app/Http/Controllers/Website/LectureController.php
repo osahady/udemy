@@ -47,7 +47,7 @@ class LectureController extends Controller
      */
     public function show(Lecture $lecture)
     {
-        return $lecture;
+        return view('website.lecture.show');
     }
 
     /**
