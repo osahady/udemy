@@ -12,12 +12,12 @@
 |
 */
 
-// Route::namespace('Website')->group(function () {
+Route::namespace('Website')->group(function () {
     
 
-    Route::get('/', 'Website\CourseController@index');
+    Route::get('/', 'CourseController@index');
     
-    Route::resource('users', 'Website\UserController')->except('store'); //لأنه يتم تسجيل المستخدم عبر عملية تسجيل الدخول
+    Route::resource('users', 'UserController')->except('store'); //لأنه يتم تسجيل المستخدم عبر عملية تسجيل الدخول
     Route::resource('enrollments', 'EnrollmentController')->except('show', 'edit', 'update');
     Route::resource('courses', 'CourseController');
     Route::get('/student/{user}/courses', 'CourseController@listMyEnrolledCourses')->name('student.courses');
@@ -33,7 +33,7 @@
     Route::resource('feedback', 'FeedbackController')->except('edit', 'update', 'destroy');
     Route::get('/student/{user}/feedback', 'FeedbackController@listStudentFeedback')->name('student.feedback');
     Route::get('/course/{course}/feedback', 'FeedbackController@listCourseFeedback')->name('course.feedback');
-// });
+});
 
 
 Auth::routes();

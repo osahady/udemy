@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Website;
 
 use App\User;
 use App\Course;
 use App\Enrollment;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 
 class CourseController extends Controller
 {
