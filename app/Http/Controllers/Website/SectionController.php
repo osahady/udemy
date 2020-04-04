@@ -15,8 +15,8 @@ class SectionController extends Controller
      */
     public function index()
     {
-        // return Section::all();
-        return view('website.section.index');
+        $sections = Section::all();
+        return view('website.section.index', compact('sections'));
     }
 
     /**
@@ -26,7 +26,6 @@ class SectionController extends Controller
      */
     public function create()
     {
-        // return 'Section Create';
         return view('website.section.create');
     }
 
@@ -49,8 +48,7 @@ class SectionController extends Controller
      */
     public function show(Section $section)
     {
-        // return $section;
-        return view('website.section.show');
+        return view('website.section.show', compact('section'));
     }
 
     /**
@@ -62,7 +60,7 @@ class SectionController extends Controller
     public function edit(Section $section)
     {
         // return $section;
-        return view('website.section.edit');
+        return view('website.section.edit', compact('section'));
     }
 
     /**
