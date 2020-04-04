@@ -1,1 +1,1 @@
-List Student's Feedback
+List Course's Feedback
