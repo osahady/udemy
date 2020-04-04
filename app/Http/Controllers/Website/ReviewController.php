@@ -18,7 +18,8 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        return Review::all();
+        // return Review::all();
+        return view('website.review.index');
     }
 
     /**
@@ -28,7 +29,7 @@ class ReviewController extends Controller
      */
     public function create()
     {
-        return 'Review Create';
+        return view('website.review.create');
     }
 
     /**
@@ -39,7 +40,7 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-
+        return redirect()->back()->withSuccess('Created.');
     }
 
     /**
@@ -50,18 +51,20 @@ class ReviewController extends Controller
      */
     public function show(Review $review)
     {
-        return $review;
+        return view('website.review.show');
     }
 
     public function listStudentReview(User $user)
     {
         $enrollments = $user->enrolledCourses->pluck('id');
-        return Review::findMany($enrollments);
+        // return Review::findMany($enrollments);
+        return view('website.review.list_student_review');
     }
 
     public function listCourseReview(Course $course)
     {
         $enrollments = $course->enrollments->pluck('id');
-        return Review::findMany($enrollments);
+        // return Review::findMany($enrollments);
+        return view('website.review.list_course_review');
     }
 }

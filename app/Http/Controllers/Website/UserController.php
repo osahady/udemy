@@ -15,7 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::all();
+        // return User::all();
+        return view('website.user.index');
     }
 
     /**
@@ -25,18 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return 'User Create';
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        return 'User Store';
+        return redirect(route('register'));
     }
 
     /**
@@ -47,7 +37,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return $user;
+        // return $user;
+        return view('website.user.show');
     }
 
     /**
@@ -58,7 +49,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return $user;
+        // return $user;
+        return view('website.user.edit');
     }
 
     /**
@@ -70,7 +62,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        return $user;
+        // return $user;
+        return redirect()->back()->withSuccess('Updated.');
     }
 
     /**
@@ -81,6 +74,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        return $user;
+        // return $user;
+        return redirect()->back()->withAlert('Deleted.');
     }
 }

@@ -15,7 +15,8 @@ class EnrollmentController extends Controller
      */
     public function index()
     {
-        return Enrollment::all();
+        // return Enrollment::all();
+        return view('website.enrollment.index');
     }
 
     /**
@@ -25,7 +26,8 @@ class EnrollmentController extends Controller
      */
     public function create()
     {
-        return 'Enrollment Create';
+        // return 'Enrollment Create';
+        return view('website.enrollment.create');
     }
 
     /**
@@ -36,7 +38,7 @@ class EnrollmentController extends Controller
      */
     public function store(Request $request)
     {
-        return 'Enrollment Store';
+        return redirect()->back()->withSuccess('Created.');
     }
 
 
@@ -49,6 +51,7 @@ class EnrollmentController extends Controller
      */
     public function destroy(Enrollment $enrollment)
     {
-        return 'Enrollment Destroy';
+        // return 'Enrollment Destroy';
+        return redirect()->back()->withAlert('Deleted.');
     }
 }

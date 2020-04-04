@@ -17,7 +17,8 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        return Feedback::all();
+        // return Feedback::all();
+        return view('website.feedback.index');
     }
 
     /**
@@ -27,7 +28,8 @@ class FeedbackController extends Controller
      */
     public function create()
     {
-        return 'feedback create';
+        // return 'feedback create';
+        return view('website.feedback.create');
     }
 
     /**
@@ -38,7 +40,7 @@ class FeedbackController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return redirect()->back()->withSuccess('Created.');
     }
 
     /**
@@ -49,19 +51,22 @@ class FeedbackController extends Controller
      */
     public function show(Feedback $feedback)
     {
-        return Feedback::where('enrollment_id', '=', $feedback->enrollment_id)->get();
+        // return Feedback::where('enrollment_id', '=', $feedback->enrollment_id)->get();
+        return view('website.feedback.show');
     }
 
     public function listStudentFeedback(User $user)
     {
         $enrolled_id = $user->enrolledCourses->pluck('id');
-        return Feedback::findMany($enrolled_id);
+        // return Feedback::findMany($enrolled_id);
+        return view('website.feedback.list_student_feedback');
     }
 
     public function listCourseFeedback(Course $course)
     {
 
         $enrolled_id = $course->enrollments->pluck('id');
-        return Feedback::findMany($enrolled_id);   
+        // return Feedback::findMany($enrolled_id);
+        return view('website.feedback.list_course_feedback');
     }
 }
