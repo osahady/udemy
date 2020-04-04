@@ -1,4 +1,3 @@
-@extends('website.lecture._layout')
 
 @section('content')
     <div>

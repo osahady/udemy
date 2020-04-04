@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Lecture;
 use Illuminate\Http\Request;
 
+use function Ramsey\Uuid\v1;
+
 class LectureController extends Controller
 {
     /**
@@ -15,7 +17,8 @@ class LectureController extends Controller
      */
     public function index()
     {
-        return Lecture::all();
+        // return Lecture::all();
+        return view('website.lecture.index');
     }
 
     /**
@@ -25,7 +28,8 @@ class LectureController extends Controller
      */
     public function create()
     {
-        return 'lecture create';
+        // return 'lecture create';
+        return view('website.lecture.create');
     }
 
     /**
@@ -36,7 +40,7 @@ class LectureController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return redirect()->back()->withSuccess('Created.');
     }
 
     /**
@@ -58,7 +62,8 @@ class LectureController extends Controller
      */
     public function edit(Lecture $lecture)
     {
-        return $lecture;
+        // return $lecture;
+        return view('website.lecture.edit');
     }
 
     /**
@@ -70,7 +75,7 @@ class LectureController extends Controller
      */
     public function update(Request $request, Lecture $lecture)
     {
-        //
+        return redirect()->back()->withSuccess('Updated.');
     }
 
     /**
@@ -81,6 +86,6 @@ class LectureController extends Controller
      */
     public function destroy(Lecture $lecture)
     {
-        //
+        return redirect()->back()->withAlert('Deleted.');
     }
 }

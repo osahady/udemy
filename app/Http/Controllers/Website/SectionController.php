@@ -15,7 +15,8 @@ class SectionController extends Controller
      */
     public function index()
     {
-        return Section::all();
+        // return Section::all();
+        return view('website.section.index');
     }
 
     /**
@@ -25,7 +26,8 @@ class SectionController extends Controller
      */
     public function create()
     {
-        return 'Section Create';
+        // return 'Section Create';
+        return view('website.section.create');
     }
 
     /**
@@ -36,7 +38,7 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return redirect()->back()->withSuccess('Created.');
     }
 
     /**
@@ -47,7 +49,8 @@ class SectionController extends Controller
      */
     public function show(Section $section)
     {
-        return $section;
+        // return $section;
+        return view('website.section.show');
     }
 
     /**
@@ -58,7 +61,8 @@ class SectionController extends Controller
      */
     public function edit(Section $section)
     {
-        return $section;
+        // return $section;
+        return view('website.section.edit');
     }
 
     /**
@@ -70,7 +74,7 @@ class SectionController extends Controller
      */
     public function update(Request $request, Section $section)
     {
-        //
+        return redirect()->back()->withSuccess('Updated.');
     }
 
     /**
@@ -81,6 +85,6 @@ class SectionController extends Controller
      */
     public function destroy(Section $section)
     {
-        //
+        return redirect()->back()->withAlert('Deleted.');
     }
 }

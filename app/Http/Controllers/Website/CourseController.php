@@ -40,7 +40,7 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect()->back();
+        return redirect()->back()->withSuccess('Created.');
     }
 
     /**
