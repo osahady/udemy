@@ -1,0 +1,2 @@
+showing one course:
+{{ $course }}

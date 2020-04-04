@@ -22,13 +22,13 @@ class CommentController extends Controller
         if($course){
             $course = $lecture->section->course->id;
             $qyr = 
-            'SELECT `comments`.`id`, `sections`.`course_id` 
+            'SELECT *
             FROM `comments` 
                 INNER JOIN `lectures` ON `comments`.`lecture_id` = `lectures`.`id`
                 INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
             WHERE `sections`.`course_id` = ?';
             $courseComments = DB::select($qyr, [$course]);
-            return $courseComments;
+            return view('website.comment.index')->with($courseComments);
         }
         else
             return $lecture->comments;
@@ -41,7 +41,7 @@ class CommentController extends Controller
      */
     public function create()
     {
-        return 'Comment Create';
+        return view('website.comment.create');
     }
 
     /**
@@ -52,7 +52,7 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        return 'Comment Store';
+        return redirect()->back();
     }
 
 
@@ -64,7 +64,7 @@ class CommentController extends Controller
      */
     public function edit(Comment $comment)
     {
-        return $comment;
+        return view('website.comment.edit');
     }
 
     /**
@@ -76,7 +76,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        return 'Comment Update';
+        return redirect()->back()withSuccess('Updated Successfully');
     }
 
     /**
@@ -87,7 +87,7 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        return 'Comment Destroy';
+        return redirect()->back()withAlert('Deleted Successfully');
     }
 
     public function commentsForTeacher(User $teacher)
@@ -101,10 +101,11 @@ class CommentController extends Controller
                 INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
                 INNER JOIN `courses` ON `sections`.`course_id` = `courses`.`id`
             WHERE `courses`.`teacher_id` = ? ';
-
-            return DB::select($qyr, [$teacher->id]);
+            $comments_for_teacher = DB::select($qyr, [$teacher->id]);
+            
+            return view('website.comment.comments_for_teacher', compact('comments_for_teacher'));
         }else{
-            return 'he is a student';
+            return 'There are no comments';
         }
     }
 }

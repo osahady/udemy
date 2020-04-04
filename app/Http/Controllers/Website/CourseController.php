@@ -18,7 +18,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return Course::all();
+        $courses = Course::all();
+        return view('website.course.index', compact('courses'));
     }
 
     /**
@@ -28,7 +29,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return 'Course Create';
+        return view('website.course.create');
     }
 
     /**
@@ -39,7 +40,7 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        return 'Course Store';
+        return redirect()->back();
     }
 
     /**
@@ -50,7 +51,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        return $course;
+        return view('website.course.show', compact('course'));
     }
 
     /**
@@ -61,7 +62,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        return $course;
+        return view('website.course.edit', compact('course'));
     }
 
     /**
@@ -73,7 +74,7 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        return 'Course Update';
+        return redirect()->back()->withSuccess('Updated Successfully');
     }
 
     /**
@@ -84,17 +85,19 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        return 'Course Destroy';
+        return redirect()->back()->withAlert('Deleted Successfully');
     }
 
     public function listMyCreatedCourses(User $user)
     {
-        return $user->createdCourses;
+        $createdCourses = $user->createdCourses;
+        return view('website.course.list_my_created_courses', compact('createdCourses'));
     }
 
     public function listMyEnrolledCourses(User $user)
     {
         $courses = $user->enrolledCourses->pluck('course_id');
-        return Course::findMany($courses);
+        $enrolledCourses = Course::findMany($courses);
+        return view('website.course.list_my_enrolled_courses', compact('enrolledCourses'));
     }
 }
