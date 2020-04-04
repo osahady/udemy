@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Website;
 
 use App\Course;
 use App\Feedback;
+use App\Http\Controllers\Controller;
 use App\Review;
 use App\User;
 use Illuminate\Http\Request;
