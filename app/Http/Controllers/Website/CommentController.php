@@ -21,9 +21,9 @@ class CommentController extends Controller
     {
         if($course){
             $course = $lecture->section->course->id;
-            $qyr = 
+            $qyr =
             'SELECT *
-            FROM `comments` 
+            FROM `comments`
                 INNER JOIN `lectures` ON `comments`.`lecture_id` = `lectures`.`id`
                 INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
             WHERE `sections`.`course_id` = ?';
@@ -93,16 +93,16 @@ class CommentController extends Controller
     public function commentsForTeacher(User $teacher)
     {
         if (count($teacher->createdCourses)) {
-            $qyr = 
-            'SELECT `comments`.`content`, `courses`.`title` as `course`, 
+            $qyr =
+            'SELECT `comments`.`content`, `courses`.`title` as `course`,
             `lectures`.`id` as `lecture_id`, `comments`.`comment_id`
-            FROM `comments` 
+            FROM `comments`
                 INNER JOIN `lectures` ON `comments`.`lecture_id` = `lectures`.`id`
                 INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
                 INNER JOIN `courses` ON `sections`.`course_id` = `courses`.`id`
             WHERE `courses`.`teacher_id` = ? ';
             $comments_for_teacher = DB::select($qyr, [$teacher->id]);
-            
+
             return view('website.comment.comments_for_teacher', compact('comments_for_teacher'));
         }else{
             return 'There are no comments';
