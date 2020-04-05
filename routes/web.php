@@ -20,19 +20,26 @@ Route::namespace('Website')->group(function () {
     Route::resource('users', 'UserController')->except('store'); //لأنه يتم تسجيل المستخدم عبر عملية تسجيل الدخول
     Route::resource('enrollments', 'EnrollmentController')->except('show', 'edit', 'update');
     Route::resource('courses', 'CourseController');
-    Route::get('/student/{user}/courses', 'CourseController@listMyEnrolledCourses')->name('student.courses');
-    Route::get('/teacher/{user}/courses', 'CourseController@listMyCreatedCourses')->name('teacher.courses');
     Route::resource('comments', 'CommentController')->except('index', 'show');
-    Route::get('/comments/{lecture}/{course?}', 'CommentController@index')->name('current.lecture');
-    Route::get('/teacher/{teacher}/comments', 'CommentController@commentsForTeacher')->name('comments.teacher');
+    Route::get('/comments/{lecture}/{course?}', 'CommentController@index')->name('lectures.current');
     Route::resource('sections', 'SectionController');
     Route::resource('reviews', 'ReviewController')->except('edit', 'update', 'destroy');
-    Route::get('student/{user}/reviews', 'ReviewController@listStudentReview')->name('student.reviews');
-    Route::get('course/{course}/reviews', 'ReviewController@listCourseReview')->name('course.reviews');
+    Route::get('course/{course}/reviews', 'ReviewController@listCourseReview')->name('reviews.course');
     Route::resource('lectures', 'LectureController');
     Route::resource('feedback', 'FeedbackController')->except('edit', 'update', 'destroy');
-    Route::get('/student/{user}/feedback', 'FeedbackController@listStudentFeedback')->name('student.feedback');
-    Route::get('/course/{course}/feedback', 'FeedbackController@listCourseFeedback')->name('course.feedback');
+    Route::get('/course/{course}/feedback', 'FeedbackController@listCourseFeedback')->name('feedback.course');
+
+    Route::group(['prefix' => 'teacher'],function (){
+        Route::get('{user}/courses', 'CourseController@listMyCreatedCourses')->name('courses.teacher');
+        Route::get('{teacher}/comments', 'CommentController@commentsForTeacher')->name('comments.teacher');
+    
+    });
+    Route::group(['prefix' => 'student'], function(){
+        Route::get('{user}/courses', 'CourseController@listMyEnrolledCourses')->name('courses.student');
+        Route::get('{user}/reviews', 'ReviewController@listStudentReview')->name('reviews.student');
+        Route::get('{user}/feedback', 'FeedbackController@listStudentFeedback')->name('feedback.student');
+    
+    });
 });
 
 

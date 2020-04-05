@@ -76,7 +76,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        return redirect()->back()withSuccess('Updated Successfully');
+        return redirect()->back()->withSuccess('Updated Successfully');
     }
 
     /**
@@ -87,7 +87,7 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        return redirect()->back()withAlert('Deleted Successfully');
+        return redirect()->back()->withAlert('Deleted Successfully');
     }
 
     public function commentsForTeacher(User $teacher)

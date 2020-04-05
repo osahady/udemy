@@ -26,5 +26,14 @@ class CoursesTableSeeder extends Seeder
             $image->imageable_type = 'App\Course';
             $image->save();
         });
+
+        
+        $courses = collect(['HTML & CSS', 'Javascript', 'PHP', 'MYSQL', 'Laravel', 'Python', 'ASP.NET', 'UML Diagrams', 'Vue', 'Wordpress', 'Docker', 'Flutter', '3CX PBX']);
+        $courses->each(function($c){
+            factory(Course::class)->create([
+                'title' => $c,
+                'teacher_id' => rand(1,5)
+            ]);
+        });
     }
 }

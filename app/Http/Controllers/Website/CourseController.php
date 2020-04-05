@@ -40,6 +40,8 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
+        return $request->all();
         return redirect()->back()->withSuccess('Created.');
     }
 
@@ -74,6 +76,7 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
+        dd($request->all());
         return redirect()->back()->withSuccess('Updated Successfully');
     }
 
@@ -85,19 +88,20 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
+        $course->delete();
         return redirect()->back()->withAlert('Deleted Successfully');
     }
 
     public function listMyCreatedCourses(User $user)
     {
         $createdCourses = $user->createdCourses;
-        return view('website.course.list_my_created_courses', compact('createdCourses'));
+        return view('website.course.list_my_created_courses', compact('createdCourses', 'user'));
     }
 
     public function listMyEnrolledCourses(User $user)
     {
         $courses = $user->enrolledCourses->pluck('course_id');
         $enrolledCourses = Course::findMany($courses);
-        return view('website.course.list_my_enrolled_courses', compact('enrolledCourses'));
+        return view('website.course.list_my_enrolled_courses', compact('enrolledCourses', 'user'));
     }
 }

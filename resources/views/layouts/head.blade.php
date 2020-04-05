@@ -6,9 +6,10 @@
 <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<title>{{ config('app.name', 'xyz') }}</title>
+{{-- <title>{{ config('app.name', 'xyz') }}</title> --}}
 
-{{-- <title>@yield('title')</title> --}}
+<title>@yield('title')</title>
+
 
 <!-- Fonts -->
 <link rel="dns-prefetch" href="//fonts.gstatic.com">
