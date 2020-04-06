@@ -104,4 +104,9 @@ class CourseController extends Controller
         $enrolledCourses = Course::findMany($courses);
         return view('website.course.list_my_enrolled_courses', compact('enrolledCourses', 'user'));
     }
+
+    public function listingSections(Course $course)
+    {
+        return Course::list()->findOrFail($course->id);
+    }
 }

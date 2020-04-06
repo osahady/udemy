@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
@@ -41,6 +42,11 @@ class Course extends Model
         //key is: name of the relationship mehtod (teacher) _ owner key 
         // which is the primary key of the user that is id
         // <=> teacher_id
+    }
+
+    public function scopeList(Builder $query, $course)
+    {
+        return $query->with('sections.lectures')->where('id', $course);
     }
 
     
