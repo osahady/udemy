@@ -1,1 +1,1 @@
-comments for teacher are:
+{{$comments}}

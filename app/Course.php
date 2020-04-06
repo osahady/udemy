@@ -42,4 +42,6 @@ class Course extends Model
         // which is the primary key of the user that is id
         // <=> teacher_id
     }
+
+    
 }

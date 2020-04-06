@@ -29,11 +29,13 @@ Route::namespace('Website')->group(function () {
     Route::resource('feedback', 'FeedbackController')->except('edit', 'update', 'destroy');
     Route::get('/course/{course}/feedback', 'FeedbackController@listCourseFeedback')->name('feedback.course');
 
+    //teacher
     Route::group(['prefix' => 'teacher'],function (){
         Route::get('{user}/courses', 'CourseController@listMyCreatedCourses')->name('courses.teacher');
         Route::get('{teacher}/comments', 'CommentController@commentsForTeacher')->name('comments.teacher');
     
     });
+    //student
     Route::group(['prefix' => 'student'], function(){
         Route::get('{user}/courses', 'CourseController@listMyEnrolledCourses')->name('courses.student');
         Route::get('{user}/reviews', 'ReviewController@listStudentReview')->name('reviews.student');

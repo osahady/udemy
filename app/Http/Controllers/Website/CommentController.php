@@ -7,6 +7,7 @@ use App\Course;
 use App\Http\Controllers\Controller;
 use App\Lecture;
 use App\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,15 +21,21 @@ class CommentController extends Controller
     public function index(Lecture $lecture, bool $course = false)
     {
         if($course){
-            $course = $lecture->section->course->id;
-            $qyr =
-            'SELECT *
-            FROM `comments`
-                INNER JOIN `lectures` ON `comments`.`lecture_id` = `lectures`.`id`
-                INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
-            WHERE `sections`.`course_id` = ?';
-            $courseComments = DB::select($qyr, [$course]);
-            return view('website.comment.index')->with($courseComments);
+            // $course = $lecture->section->course->id;
+            // $qyr =
+            // 'SELECT *
+            // FROM `comments`
+            //     INNER JOIN `lectures` ON `comments`.`lecture_id` = `lectures`.`id`
+            //     INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
+            // WHERE `sections`.`course_id` = ?';
+            // $courseComments = DB::select($qyr, [$course]);
+            $courseComments = DB::table('comments')
+                                    ->join('lectures', 'comments.lecture_id', '=', 'lectures.id')
+                                    ->join('sections', 'lectures.section_id', '=', 'sections.id')
+                                    ->select('comments.*', 'lectures.id', 'sections.course_id')
+                                    ->where('sections.course_id', '=', 2)
+                                    ->dd();
+            return view('website.comment.index', compact('courseComments'));
         }
         else
             return $lecture->comments;
@@ -93,17 +100,26 @@ class CommentController extends Controller
     public function commentsForTeacher(User $teacher)
     {
         if (count($teacher->createdCourses)) {
-            $qyr =
-            'SELECT `comments`.`content`, `courses`.`title` as `course`,
-            `lectures`.`id` as `lecture_id`, `comments`.`comment_id`
-            FROM `comments`
-                INNER JOIN `lectures` ON `comments`.`lecture_id` = `lectures`.`id`
-                INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
-                INNER JOIN `courses` ON `sections`.`course_id` = `courses`.`id`
-            WHERE `courses`.`teacher_id` = ? ';
-            $comments_for_teacher = DB::select($qyr, [$teacher->id]);
+            // $qyr =
+            // 'SELECT `comments`.`content`, `courses`.`title` as `course`,
+            // `lectures`.`id` as `lecture_id`, `comments`.`comment_id`
+            // FROM `comments`
+            //     INNER JOIN `lectures` ON `comments`.`lecture_id` = `lectures`.`id`
+            //     INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
+            //     INNER JOIN `courses` ON `sections`.`course_id` = `courses`.`id`
+            // WHERE `courses`.`teacher_id` = ? ';
+            // $comments_for_teacher = DB::select($qyr, [$teacher->id]);
 
-            return view('website.comment.comments_for_teacher', compact('comments_for_teacher'));
+            $comments = DB::table('comments')
+                        ->join('lectures', 'comments.lecture_id', '=', 'lectures.id')
+                        ->join('sections', 'lectures.section_id', '=', 'sections.id')
+                        ->join('courses', 'sections.course_id', '=', 'courses.id')
+                        ->select('comments.id','comments.content', 'courses.title as course', 'lectures.id as lecture_id', 'comments.comment_id')
+                        ->where('courses.teacher_id', $teacher->id)
+                        ->get();
+
+
+            return view('website.comment.comments_for_teacher', compact('comments'));
         }else{
             return 'There are no comments';
         }

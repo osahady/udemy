@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Website;
 
+use App\Course;
 use App\Http\Controllers\Controller;
 use App\Section;
 use Illuminate\Http\Request;
