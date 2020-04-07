@@ -53,6 +53,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
+        $course = $course->list();
         return view('website.course.show', compact('course'));
     }
 
@@ -107,6 +108,8 @@ class CourseController extends Controller
 
     public function listingSections(Course $course)
     {
-        return Course::list()->findOrFail($course->id);
+        $list = Course::list($course)->findOrFail($course->id);
+        return view('website.course.listing_sections', compact('list'));
     }
+    
 }

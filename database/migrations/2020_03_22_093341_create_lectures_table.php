@@ -17,7 +17,7 @@ class CreateLecturesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('section_id');
             $table->string('title');
-            $table->time('duration');
+            $table->unsignedSmallInteger('duration'); // between 0 - 65 535 (2 bytes)
             $table->timestamps();
 
             $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');

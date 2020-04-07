@@ -2,11 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Builder;
+use Carbon\CarbonInterval;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Course extends Model
 {
+    
     protected $fillable = [
         'title', 'description', 'teacher_id', 'category_id'
     ];
@@ -44,10 +47,37 @@ class Course extends Model
         // <=> teacher_id
     }
 
-    public function scopeList(Builder $query, $course)
+    public function list()
     {
-        return $query->with('sections.lectures')->where('id', $course);
+        return $this->with(['sections.lectures', 
+                            'sections' => function($q){
+                                return $q->withCount('lectures');
+                            }])
+                    ->withCount('sections')
+                    ->where('id', $this->id)
+                    ->first();
     }
 
-    
+    public function calcDuration()
+    {
+        // $query = 
+        // 'SELECT SUM(`lectures`.`duration`)
+        // FROM `lectures`
+        //     INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
+        //     INNER JOIN `courses` ON `sections`.`course_id` = `courses`.`id`
+        // WHERE courses.id = ?';
+
+        // $d = DB::select($query, $this->id);
+
+        $dd = DB::table('lectures')
+                        ->join('sections', 'lectures.section_id', '=', 'sections.id')
+                        ->join('courses', 'sections.course_id', '=', 'courses.id')
+                        ->selectRaw('SUM(`lectures`.`duration`) as course_duration')
+                        ->where('courses.id', $this->id)
+                        ->get();
+        
+
+        return CarbonInterval::seconds($dd[0]->course_duration)->cascade();
+         
+    }
 }
