@@ -8,6 +8,7 @@
         <a href="{{ route('courses.show', ['course' => $course->id]) }}">
             {{ $course->title }}
         </a>
+        <small>{{ $course->calcDuration() }}</small>
         <form action="{{ route('courses.destroy', $course->id) }}" method="POST">
             @csrf @method('DELETE')
             <button class="btn btn-outline-danger" type="submit">Delete</button>
@@ -15,5 +16,5 @@
     </li>
     @endforeach
 </ol>
-    
+
 @endsection

@@ -7,6 +7,15 @@
 <p class="lead">
     {{ $course->description }}
 </p>
+
+<hr class="bg-light">
+<h2>Requirements</h2>
+<ol>
+    @foreach ($requirements as $requirement)
+        <li>{{ $requirement->content }}</li>
+    @endforeach
+</ol>
+<hr class="bg-light">
 <h2>Table of Contents</h2>
 
 <ul>
