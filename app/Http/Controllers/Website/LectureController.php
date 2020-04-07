@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Website;
 
+use App\Course;
 use App\Http\Controllers\Controller;
 use App\Lecture;
 use Illuminate\Http\Request;
@@ -51,7 +52,8 @@ class LectureController extends Controller
      */
     public function show(Lecture $lecture)
     {
-        return view('website.lecture.show');
+        $list = Course::list($lecture->section->course);
+        return view('website.lecture.show', compact('list'));
     }
 
     /**

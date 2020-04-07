@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Course extends Model
 {
@@ -15,7 +16,7 @@ class Course extends Model
     {
         return $this->belongsTo('App\Category');
     }
-    
+
     public function sections()
     {
         return $this->hasMany('App\Section');
@@ -39,15 +40,18 @@ class Course extends Model
     public function teacher()
     {
         return $this->belongsTo('App\User'); // by convention the name of the foregin
-        //key is: name of the relationship mehtod (teacher) _ owner key 
+        //key is: name of the relationship mehtod (teacher) _ owner key
         // which is the primary key of the user that is id
         // <=> teacher_id
     }
 
-    public function scopeList(Builder $query, $course)
+    public function scopeList()
     {
-        return $query->with('sections.lectures')->where('id', $course);
+        return $this->with(['sections.lectures', 'sections' => function ($q) {
+            return $q->withCount('lectures');
+            // return $q->with(['lectures' => function ($l) {
+            //     return $l->sum('id');
+            // }]);
+        }])->withCount('sections')->where('id', $this->id)->first();
     }
-
-    
 }

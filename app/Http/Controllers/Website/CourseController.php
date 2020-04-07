@@ -53,7 +53,9 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        return view('website.course.show', compact('course'));
+        $requirements = $course->requirements;
+        $course = $course->list();
+        return view('website.course.show', compact('course', 'requirements'));
     }
 
     /**

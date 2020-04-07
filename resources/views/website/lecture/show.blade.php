@@ -6,6 +6,13 @@
     @endsection
     @section('sidebar')
     <div>
-        sidebar 1 3rd of the width
+        <ul>
+            @foreach ($list[0]->sections as $section)
+                <h3>{{ $section->title }}</h3>
+                @foreach ($section->lectures as $lecture)
+                    <li>{{ $lecture->title }}</li>
+                @endforeach
+            @endforeach
+        </ul>
     </div>
     @endsection
