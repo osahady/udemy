@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Model;
 
 class Section extends Model
@@ -19,4 +20,11 @@ class Section extends Model
     {
         return $this->hasMany('App\Lecture');
     }
+
+    public function duration($time)
+    {
+        return CarbonInterval::seconds($time)->cascade();
+    }
+
+    
 }

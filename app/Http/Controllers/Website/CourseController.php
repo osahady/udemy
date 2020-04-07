@@ -109,6 +109,7 @@ class CourseController extends Controller
 
     public function listingSections(Course $course)
     {
-        return Course::list()->findOrFail($course->id);
+        $list = Course::list($course)->findOrFail($course->id);
+        return view('website.course.listing_sections', compact('list'));
     }
 }
