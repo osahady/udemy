@@ -112,8 +112,7 @@ class Course extends Model
                      ->where('images.imageable_type', '=', User::class);
             })
             ->select('users.name', 'reviews.content', 'reviews.stars', 'images.path')
-            ->where('enrollments.course_id', $this->id)
-            ->get();
+            ->where('enrollments.course_id', $this->id);
             
         return $rating;
 

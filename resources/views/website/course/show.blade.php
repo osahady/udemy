@@ -1,4 +1,4 @@
-{{-- @extends('website.course._layout')
+@extends('website.course._layout')
 
 @section('content')
 <h2>{{ $course->title }}</h2>
@@ -40,21 +40,35 @@
 
 <hr class="bg-light">
 <h3>Reviews</h3>
-<ul>
-@foreach ($course->reviewing() as $review)
-    <li>{{ $review }}</li>
+
+@foreach ($enrollments as $enrollment)
+<div class="row">
+    <div class="col-4">
+        <h3>{{ $enrollment->student->name }}</h3>
+        <img src="{{ $enrollment->student->image->path ?? asset('avatar.jpg') }}" width="100px" alt="There is no image">
+        <small>{{ $enrollment->review->created_at->diffForHumans() }}</small>
+    </div>
+    <div class="col-8">
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped" style="width:{{ $enrollment->review->stars * 10 }}%"></div>
+        </div>
+        
+        <p class="lead">
+            {{ $enrollment->review->content }}
+        </p>
+    </div>
+</div>
+<hr class="bg-light my-5">
 @endforeach
-</ul>
+
+
 @endsection
 
 @section('sidebar')
     <button class="btn btn-danger">Buy</button>
     <a class="btn btn-info" href="{{ route('courses.edit', ['course' => $course->id]) }}">Edit</a>
-@endsection --}}
+@endsection
 
 
-{{-- @foreach (json_decode($course->reviewing(), true) as $item)
-    <p>{{ $item }}</p>
-@endforeach --}}
+    
 
-{{ $course->reviewing() }}
