@@ -2,7 +2,8 @@
 
 @section('content')
 <h2>{{ $course->title }}</h2>
-<small>{{ $course->calcDuration() }}</small>
+<small>{{ $course->calcDuration() }}</small> |
+<small>{{ $course->enrollments->count() }} students enrolled</small>
 
 <p class="lead">
     {{ $course->description }}
@@ -34,6 +35,20 @@
 @endforeach
 </ul>
 
+<hr class="bg-light">
+<h2>Reviews</h2>
+@foreach ($reviews as $review)
+    <div class="row">
+        <div class="col-4">
+            <p>{{ $review->student->name }}</p>
+            <p>{{ $review->student->image->path }}</p>
+        </div>
+        <div class="col-8">
+            <p>{{ $review->review->stars }}</p>
+            <p>{{ $review->review->content }}</p>
+        </div>
+    </div>
+@endforeach
 
 @endsection
 

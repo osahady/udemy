@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Website;
 
 use App\User;
 use App\Course;
+use App\Review;
 use App\Enrollment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -53,9 +54,41 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
+        // $reviews = Review::with([
+        //     'enrollment' => function ($q) {
+        //         $q->select(['id', 'student_id', 'course_id']);
+        //     },
+        //     'enrollment.course' => function ($q) {
+        //         $q->select(['id', 'title']);
+        //     },
+        //     'enrollment.course.sections' => function ($q) {
+        //         $q->select(['id', 'course_id', 'title'])
+        //             ->where('title', 'like', '%php%');
+        //     },
+        //     'enrollment.course.sections.lectures' => function ($q) {
+        //         $q->select(['section_id', 'duration'])->first();
+        //     },
+        //     'enrollment.student' => function ($q) {
+        //         $q->select(['id', 'name']);
+        //     },
+        //     'enrollment.student.image' => function ($q) {
+        //         $q->select(['path']);
+        //     }
+        // ])->whereHas('enrollment', function ($q) use ($course) {
+        //     $q->where('course_id', $course->id);
+        // })->select(['enrollment_id', 'stars', 'content'])->get();
+
         $requirements = $course->requirements;
         $course = $course->list();
-        return view('website.course.show', compact('course', 'requirements'));
+        $reviews = $course->enrollments()
+            ->select(['id', 'student_id'])
+            ->has('review')
+            ->with('review:enrollment_id,stars,content')
+            ->with(['student' => function ($q) {
+                $q->select(['id', 'name'])->with('image:imageable_id,path');
+            }])->get();
+
+        return view('website.course.show', compact('course', 'requirements', 'reviews'));
     }
 
     /**

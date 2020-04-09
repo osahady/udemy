@@ -71,14 +71,40 @@ class Course extends Model
 
         // $d = DB::select($query, $this->id);
 
-        $dd = DB::table('lectures')
+        $query = DB::table('lectures')
             ->join('sections', 'lectures.section_id', '=', 'sections.id')
             ->join('courses', 'sections.course_id', '=', 'courses.id')
             ->selectRaw('SUM(`lectures`.`duration`) as course_duration')
             ->where('courses.id', $this->id)
             ->get();
 
+        $time = $query[0]->course_duration;
+        $time = CarbonInterval::seconds($time)->cascade()->format($time >= 3600 ? '%hhr %imin' : '%imin');
+        $time = str_replace(' 0min', '', $time);
+        return $time;
+    }
 
-        return CarbonInterval::seconds($dd[0]->course_duration)->cascade();
+    public function rating()
+    {
+        $query = DB::table('reviews')
+            ->join('enrollments', 'enrollments.id', '=', 'reviews.enrollment_id')
+            ->join('courses', 'courses.id', '=', 'enrollments.course_id')
+            ->selectRaw('SUM(`reviews`.`stars`) as stars, COUNT(`reviews`.`enrollment_id`) as voters')
+            ->where('courses.id', $this->id)
+            ->first();
+
+        if ($query->voters != 0) {
+            return [
+                "voters" => $query->voters,
+                "stars" => $query->stars,
+                "rating" => $query->stars / $query->voters / 2,
+            ];
+        } else {
+            return [
+                "voters" => '',
+                "stars" => '',
+                "rating" => 'no rating yet!',
+            ];
+        }
     }
 }
