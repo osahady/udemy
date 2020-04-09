@@ -20,7 +20,6 @@
     @endforeach
 </ol>
 <hr class="bg-light">
-
 <h2>Table of Contents</h2>
 
 <ul>
