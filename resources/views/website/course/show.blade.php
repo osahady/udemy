@@ -3,14 +3,10 @@
 @section('content')
 <h2>{{ $course->title }}</h2>
 <small>{{ $course->calcDuration() }}</small> |
-<<<<<<< HEAD
 <small>{{ $course->enrollments->count() }}</small> students enrolled  |
 <small>{{ $course->rating()['rating'] }}</small> |
 <small>{{ $course->teacher->name }}</small> |
 <small>{{ $course->updated_at->format('m/Y') }}</small>
-=======
-<small>{{ $course->enrollments->count() }} students enrolled</small>
->>>>>>> 06b2091d9440cf2230114907efec168104aff478
 
 <p class="lead">
     {{ $course->description }}
