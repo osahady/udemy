@@ -3,10 +3,14 @@
 @section('content')
 <h2>{{ $course->title }}</h2>
 <small>{{ $course->calcDuration() }}</small> |
+<<<<<<< HEAD
 <small>{{ $course->enrollments->count() }}</small> students enrolled  |
 <small>{{ $course->rating()['rating'] }}</small> |
 <small>{{ $course->teacher->name }}</small> |
 <small>{{ $course->updated_at->format('m/Y') }}</small>
+=======
+<small>{{ $course->enrollments->count() }} students enrolled</small>
+>>>>>>> 06b2091d9440cf2230114907efec168104aff478
 
 <p class="lead">
     {{ $course->description }}
@@ -39,6 +43,7 @@
 </ul>
 
 <hr class="bg-light">
+<<<<<<< HEAD
 <h3>Reviews</h3>
 
 @foreach ($enrollments as $enrollment)
@@ -61,6 +66,21 @@
 <hr class="bg-light my-5">
 @endforeach
 
+=======
+<h2>Reviews</h2>
+@foreach ($reviews as $review)
+    <div class="row">
+        <div class="col-4">
+            <p>{{ $review->student->name }}</p>
+            <p>{{ $review->student->image->path }}</p>
+        </div>
+        <div class="col-8">
+            <p>{{ $review->review->stars }}</p>
+            <p>{{ $review->review->content }}</p>
+        </div>
+    </div>
+@endforeach
+>>>>>>> 06b2091d9440cf2230114907efec168104aff478
 
 @endsection
 

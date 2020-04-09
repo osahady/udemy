@@ -27,6 +27,4 @@ class Section extends Model
         $time = str_replace(' 0min', '', $time);
         return $time;
     }
-
-    
 }
