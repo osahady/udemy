@@ -3,9 +3,9 @@
 namespace App;
 
 use Carbon\CarbonInterval;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Course extends Model
 {
@@ -71,14 +71,62 @@ class Course extends Model
 
         // $d = DB::select($query, $this->id);
 
-        $dd = DB::table('lectures')
+        $query = DB::table('lectures')
             ->join('sections', 'lectures.section_id', '=', 'sections.id')
             ->join('courses', 'sections.course_id', '=', 'courses.id')
             ->selectRaw('SUM(`lectures`.`duration`) as course_duration')
             ->where('courses.id', $this->id)
+            ->first();
+
+        $time = $query->course_duration;
+        $time = CarbonInterval::seconds($time)->cascade()->format($time>=3600 ? '%hhr %imin' : '%imin');
+        $time = str_replace(' 0min', '', $time);
+        return $time;
+    }
+
+    public function rating()
+    {
+        $rating= DB::table('reviews')
+            ->join('enrollments', 'enrollments.id', '=', 'reviews.enrollment_id')
+            ->join('courses', 'courses.id', '=', 'enrollments.course_id')
+            ->selectRaw('SUM(`reviews`.`stars`) as stars, COUNT(`reviews`.`enrollment_id`) as voters')
+            ->where('courses.id', $this->id)
+            ->first();
+
+        return [
+            "stars" => $rating->stars,
+            "voters" => $rating->voters,
+            "rating" => $rating->stars/2/$rating->voters
+
+        ];
+        
+    }
+
+    public function reviewing()
+    {
+        $rating= DB::table('reviews')
+            ->join('enrollments', 'enrollments.id', '=', 'reviews.enrollment_id')
+            ->join('users', 'users.id', '=', 'enrollments.student_id')
+            ->leftJoin('images', function ($join) {
+                $join->on('images.imageable_id', '=', 'users.id')
+                     ->where('images.imageable_type', '=', User::class);
+            })
+            ->select('users.name', 'reviews.content', 'reviews.stars', 'images.path')
+            ->where('enrollments.course_id', $this->id)
             ->get();
+            
+        return $rating;
 
+        // $query = 
+        // 'SELECT `users`.`name`, `reviews`.`content`, `reviews`.`stars`, `images`.`path`
+        // FROM `reviews`
+        //     INNER JOIN `enrollments` ON (`enrollments`.`id` = `reviews`.`enrollment_id`)
+        //     INNER JOIN `users` ON (`users`.`id` = `enrollments`.`student_id`)
+        //     LEFT JOIN `images` ON (`images`.`imageable_id` = `users`.`id` AND `images`.`imageable_type` LIKE "%User")
+        // WHERE `enrollments`.`course_id` = ?';
 
-        return CarbonInterval::seconds($dd[0]->course_duration)->cascade();
+        // $reviews = DB::select($query, [$this->id]);
+        // return json_encode($reviews);
+
     }
 }

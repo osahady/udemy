@@ -16,4 +16,6 @@ class Review extends Model
     {
         return $this->belongsTo('App\Enrollment');
     }
+
+    
 }

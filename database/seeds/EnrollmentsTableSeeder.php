@@ -31,9 +31,11 @@ class EnrollmentsTableSeeder extends Seeder
         });
 
         $enrollments = Enrollment::all();
-        factory(Review::class, count($enroll) - rand(0, count($enroll)))->make()->each(function ($review, $index) use ($enrollments) {
-            $review->enrollment_id = $enrollments[$index]->id;
-            $review->save();
+        factory(Review::class, count($enroll))->make()->each(function ($review, $index) use ($enrollments) {
+            if (rand(1,5) > 2) {
+                $review->enrollment_id = $enrollments[$index]->id;
+                $review->save();
+            }
         });
     }
 }

@@ -23,7 +23,9 @@ class Section extends Model
 
     public function duration($time)
     {
-        return CarbonInterval::seconds($time)->cascade();
+        $time = CarbonInterval::seconds($time)->cascade()->format($time>=3600 ? '%hhr %imin' : '%imin');
+        $time = str_replace(' 0min', '', $time);
+        return $time;
     }
 
     
