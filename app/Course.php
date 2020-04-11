@@ -79,44 +79,52 @@ class Course extends Model
             ->first();
 
         $time = $query->course_duration;
-        $time = CarbonInterval::seconds($time)->cascade()->format($time>=3600 ? '%hhr %imin' : '%imin');
+        $time = CarbonInterval::seconds($time)->cascade()->format($time >= 3600 ? '%hhr %imin' : '%imin');
         $time = str_replace(' 0min', '', $time);
         return $time;
     }
 
     public function rating()
     {
-        $rating= DB::table('reviews')
+        $rating = DB::table('reviews')
             ->join('enrollments', 'enrollments.id', '=', 'reviews.enrollment_id')
             ->join('courses', 'courses.id', '=', 'enrollments.course_id')
             ->selectRaw('SUM(`reviews`.`stars`) as stars, COUNT(`reviews`.`enrollment_id`) as voters')
             ->where('courses.id', $this->id)
             ->first();
 
-        return [
-            "stars" => $rating->stars,
-            "voters" => $rating->voters,
-            "rating" => $rating->stars/2/$rating->voters
+        if ($rating->voters != 0) {
+            return [
+                "stars" => $rating->stars,
+                "voters" => $rating->voters,
+                "rating" => $rating->stars / 2 / $rating->voters
 
-        ];
-        
+            ];
+        } else {
+            return [
+                "stars" => '',
+                "voters" => '',
+                "rating" => 'No rating yet!'
+
+            ];
+        }
     }
 
     public function reviewing()
     {
-        $rating= DB::table('reviews')
+        $rating = DB::table('reviews')
             ->join('enrollments', 'enrollments.id', '=', 'reviews.enrollment_id')
             ->join('users', 'users.id', '=', 'enrollments.student_id')
             ->leftJoin('images', function ($join) {
                 $join->on('images.imageable_id', '=', 'users.id')
-                     ->where('images.imageable_type', '=', User::class);
+                    ->where('images.imageable_type', '=', User::class);
             })
             ->select('users.name', 'reviews.content', 'reviews.stars', 'images.path')
             ->where('enrollments.course_id', $this->id);
-            
+
         return $rating;
 
-        // $query = 
+        // $query =
         // 'SELECT `users`.`name`, `reviews`.`content`, `reviews`.`stars`, `images`.`path`
         // FROM `reviews`
         //     INNER JOIN `enrollments` ON (`enrollments`.`id` = `reviews`.`enrollment_id`)

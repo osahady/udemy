@@ -81,14 +81,14 @@ class CourseController extends Controller
         $requirements = $course->requirements;
         $course = $course->list();
         // $reviews = $course->reviewing()->get();
-        
+
         $enrollments = $course->enrollments()
-                          ->select('id', 'student_id')
-                          ->with('review') 
-                          ->has('review')
-                          ->with('student.image:imageable_id,path')  
-                          ->with('student:id,name')
-                          ->get();
+            ->select('id', 'student_id')
+            ->with('review')
+            ->has('review')
+            ->with('student.image:imageable_id,path')
+            ->with('student:id,name')
+            ->get();
         return view('website.course.show', compact('course', 'requirements', 'enrollments'));
     }
 
