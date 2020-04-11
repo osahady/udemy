@@ -4,7 +4,7 @@ namespace App;
 
 use Carbon\CarbonInterval;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
@@ -71,17 +71,29 @@ class Course extends Model
 
         // $d = DB::select($query, $this->id);
 
-        $query = DB::table('lectures')
-            ->join('sections', 'lectures.section_id', '=', 'sections.id')
-            ->join('courses', 'sections.course_id', '=', 'courses.id')
-            ->selectRaw('SUM(`lectures`.`duration`) as course_duration')
-            ->where('courses.id', $this->id)
-            ->first();
+        // $query = DB::table('lectures')
+        //     ->join('sections', 'lectures.section_id', '=', 'sections.id')
+        //     ->join('courses', 'sections.course_id', '=', 'courses.id')
+        //     ->selectRaw('SUM(`lectures`.`duration`) as course_duration')
+        //     ->where('courses.id', $this->id)
+        //     ->first();
 
-        $time = $query->course_duration;
-        $time = CarbonInterval::seconds($time)->cascade()->format($time >= 3600 ? '%hhr %imin' : '%imin');
-        $time = str_replace(' 0min', '', $time);
-        return $time;
+        // $time = $query->course_duration;
+        // $time = CarbonInterval::seconds($time)->cascade()->format($time >= 3600 ? '%hhr %imin' : '%imin');
+        // $time = str_replace(' 0min', '', $time);
+        // return $time;
+
+        return $this->load(['sections' => function ($q) {
+            // $q->loadMissing('lectures');
+        }]);
+    }
+
+    public function scopeWithDuration(Builder $query)
+    {
+        $query->join('sections', 'sections.course_id', '=', 'courses.id')
+            ->join('lectures', 'lectures.section_id', '=', 'sections.id')
+            ->selectRaw('courses.*, SUM(lectures.duration) AS duration')
+            ->groupBy('courses.id');
     }
 
     public function rating()

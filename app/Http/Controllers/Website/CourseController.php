@@ -78,6 +78,8 @@ class CourseController extends Controller
         //     $q->where('course_id', $course->id);
         // })->select(['enrollment_id', 'stars', 'content'])->get();
 
+        return Course::withDuration()->paginate(3);
+
         $requirements = $course->requirements;
         $course = $course->list();
         // $reviews = $course->reviewing()->get();
