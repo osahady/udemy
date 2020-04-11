@@ -4,7 +4,7 @@ namespace App;
 
 use Carbon\CarbonInterval;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
@@ -13,6 +13,10 @@ class Course extends Model
     protected $fillable = [
         'title', 'description', 'teacher_id', 'category_id'
     ];
+
+//   protected $appends = [
+//         'course_duration'
+//     ];
 
     public function category()
     {
@@ -39,6 +43,11 @@ class Course extends Model
         return $this->hasMany('App\Enrollment');
     }
 
+    // public function getCourseDurationAttribute()
+    // {
+    //     return $this->sections->sum('section_duration');
+    // }
+
     public function teacher()
     {
         return $this->belongsTo('App\User'); // by convention the name of the foregin
@@ -49,18 +58,14 @@ class Course extends Model
 
     public function list()
     {
-        return $this->with([
-            'sections.lectures',
-            'sections' => function ($q) {
-                return $q->withCount('lectures');
-            }
-        ])
-            ->withCount('sections')
-            ->where('id', $this->id)
-            ->first();
+        return $this->sections()
+                    ->select('id', 'title')
+                    ->withCount('lectures')
+                    ->with('lectures:title,duration,section_id');
+
     }
 
-    public function calcDuration()
+    public function showDuration($time)
     {
         // $query =
         // 'SELECT SUM(`lectures`.`duration`)
@@ -71,17 +76,59 @@ class Course extends Model
 
         // $d = DB::select($query, $this->id);
 
-        $query = DB::table('lectures')
-            ->join('sections', 'lectures.section_id', '=', 'sections.id')
-            ->join('courses', 'sections.course_id', '=', 'courses.id')
-            ->selectRaw('SUM(`lectures`.`duration`) as course_duration')
-            ->where('courses.id', $this->id)
-            ->first();
 
-        $time = $query->course_duration;
+
         $time = CarbonInterval::seconds($time)->cascade()->format($time>=3600 ? '%hhr %imin' : '%imin');
         $time = str_replace(' 0min', '', $time);
         return $time;
+
+        // return $duration = $this->sections()
+        //                         ->with(['lectures' => function($q){
+        //                             $q->selectRaw('section_id, SUM(duration) AS duration')
+        //                               ->groupBy('section_id');
+        //                         }])
+        //                         // ->selectRaw('SUM(duration) as course_duration')
+        //                         // ->groupBy('')
+        //                         ->get();
+    }
+
+    // public function courseDuration()
+    // {
+    //     return $this->sections()->with(['lectures' => function($q){
+    //                     $q->selectRaw('section_id, SUM(duration) AS d')
+    //                       ->groupBy('section_id');                    
+            
+    //                         }
+    //                         // ,
+    //                         // 'sections' => function($q){
+    //                         //     $q->selectRaw('SUM(d)')
+    //                         //       ->groupBy('course_id');
+    //                         // }
+    //                         ])
+    //                 // ->with(['sections'=> function($q){
+    //                 //     $q->selectRaw('SUM(d)')
+    //                 //       ->groupBy('course_id');
+    //                 // }])
+    //                 ->get();
+
+    //     return $query->with('sections')->where('id', $this->id);
+    // }
+
+    public function scopeWithDuration(Builder $query)
+    {
+        $query->join('sections', 'sections.course_id', '=', 'courses.id')
+            ->join('lectures', 'lectures.section_id', '=', 'sections.id')
+            ->selectRaw('courses.*, SUM(lectures.duration) AS course_duration')
+            ->groupBy([
+                'courses.id',
+                'courses.teacher_id',
+                'courses.category_id',
+                'courses.title',
+                'courses.description',
+                'courses.created_at',
+                'courses.updated_at'
+            ]);
+    
     }
 
     public function rating()
@@ -113,6 +160,8 @@ class Course extends Model
             })
             ->select('users.name', 'reviews.content', 'reviews.stars', 'images.path')
             ->where('enrollments.course_id', $this->id);
+
+        
             
         return $rating;
 

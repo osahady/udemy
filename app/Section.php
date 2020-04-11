@@ -11,6 +11,10 @@ class Section extends Model
         'title', 'course_id'
     ];
 
+    // protected $appends = [
+    //     'section_duration'
+    // ];
+
     public function course()
     {
         return $this->belongsTo('App\Course');
@@ -27,4 +31,14 @@ class Section extends Model
         $time = str_replace(' 0min', '', $time);
         return $time;
     }
+
+    public function calcDuration()
+    {
+        return $this->lectures()->sum('duration');
+    }
+
+    // public function getSectionDurationAttribute()
+    // {
+    //     return $this->lectures->sum('duration');
+    // }
 }
