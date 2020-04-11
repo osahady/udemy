@@ -2,7 +2,7 @@
 
 @section('content')
 <h2>{{ $course->title }}</h2>
-<small>{{ $course->calcDuration() }}</small> |
+<small>{{ $duration }}</small> |
 <small>{{ $course->enrollments->count() }}</small> students enrolled  |
 <small>{{ $course->rating()['rating'] }}</small> |
 <small>{{ $course->teacher->name }}</small> |
@@ -23,7 +23,7 @@
 <h2>Table of Contents</h2>
 
 <ul>
-@foreach ($course->sections as $section)
+@foreach ($courseList as $section)
     <li>
         <h3>{{ $section->title }} </h3>
         <small>{{ $section->duration($section->lectures->sum('duration')) }}</small>
@@ -71,4 +71,3 @@
 
 
     
-

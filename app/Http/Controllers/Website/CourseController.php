@@ -20,7 +20,8 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::all();
-        return view('website.course.index', compact('courses'));
+        $coursesDuration = Course::coursesDuration();
+        return view('website.course.index', compact('courses', 'coursesDuration'));
     }
 
     /**
@@ -79,19 +80,26 @@ class CourseController extends Controller
         // })->select(['enrollment_id', 'stars', 'content'])->get();
 
         return Course::withDuration()->paginate(3);
-
-        $requirements = $course->requirements;
-        $course = $course->list();
+        // $requirements = $course->requirements;
         // $reviews = $course->reviewing()->get();
+        // $duration = $course->coursesDuration(false);
+        // $enrollments = $course->enrollments()
+        //                   ->select('id', 'student_id')
+        //                   ->with('review')
+        //                   ->has('review')
+        //                   ->with('student.image:imageable_id,path')
+        //                   ->with('student:id,name')
+        //                   ->get();
+        // $courseList= $course->list()->get();
 
-        $enrollments = $course->enrollments()
-            ->select('id', 'student_id')
-            ->with('review')
-            ->has('review')
-            ->with('student.image:imageable_id,path')
-            ->with('student:id,name')
-            ->get();
-        return view('website.course.show', compact('course', 'requirements', 'enrollments'));
+
+        // return view('website.course.show', compact(
+        //                                             'courseList',
+        //                                             'course',
+        //                                             'requirements',
+        //                                             'enrollments',
+        //                                             'duration',
+        //                                         ));
     }
 
     /**

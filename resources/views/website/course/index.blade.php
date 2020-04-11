@@ -8,8 +8,8 @@
         <a href="{{ route('courses.show', ['course' => $course->id]) }}">
             {{ $course->title }}
         </a>
-        <small>{{ $course->calcDuration() }}</small> (
-        <small>stars: {{$course->rating()["rating"]}}</small> )
+        <small>{{ $course->showDuration($coursesDuration[$course->id]) }}</small> (
+        {{-- <small>stars: {{$course->rating()["rating"]}}</small> ) --}}
         <small>{{ $course->enrollments->count() }} students enrolled</small>
         <form action="{{ route('courses.destroy', $course->id) }}" method="POST">
             @csrf @method('DELETE')

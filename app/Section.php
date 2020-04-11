@@ -12,7 +12,7 @@ class Section extends Model
     ];
 
     // protected $appends = [
-    //     'duration'
+    //     'section_duration'
     // ];
 
     public function course()
@@ -25,14 +25,19 @@ class Section extends Model
         return $this->hasMany('App\Lecture');
     }
 
-    // public function duration($time)
-    // {
-    //     $time = CarbonInterval::seconds($time)->cascade()->format($time >= 3600 ? '%hhr %imin' : '%imin');
-    //     $time = str_replace(' 0min', '', $time);
-    //     return $time;
-    // }
+    public function duration($time)
+    {
+        $time = CarbonInterval::seconds($time)->cascade()->format($time >= 3600 ? '%hhr %imin' : '%imin');
+        $time = str_replace(' 0min', '', $time);
+        return $time;
+    }
 
-    // public function getDurationAttribute()
+    public function calcDuration()
+    {
+        return $this->lectures()->sum('duration');
+    }
+
+    // public function getSectionDurationAttribute()
     // {
     //     return $this->lectures->sum('duration');
     // }
