@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Website;
 
 use App\User;
 use App\Course;
-use App\Review;
-use App\Enrollment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -19,9 +17,15 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::all();
-        $coursesDuration = Course::coursesDuration();
-        return view('website.course.index', compact('courses', 'coursesDuration'));
+        $duration = Course::withDuration()->pluck('duration', 'id');
+        $stars = Course::withStars()->pluck('stars', 'id');
+        $courses = Course::withCount(['enrollments', 
+                            'enrollments as voters' => function($q){
+                                return $q->has('review');
+                            }])->get();
+        return view('website.course.index', compact('duration',
+                                                    'stars',
+                                                    'courses'));
     }
 
     /**
@@ -55,51 +59,23 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        // $reviews = Review::with([
-        //     'enrollment' => function ($q) {
-        //         $q->select(['id', 'student_id', 'course_id']);
-        //     },
-        //     'enrollment.course' => function ($q) {
-        //         $q->select(['id', 'title']);
-        //     },
-        //     'enrollment.course.sections' => function ($q) {
-        //         $q->select(['id', 'course_id', 'title'])
-        //             ->where('title', 'like', '%php%');
-        //     },
-        //     'enrollment.course.sections.lectures' => function ($q) {
-        //         $q->select(['section_id', 'duration'])->first();
-        //     },
-        //     'enrollment.student' => function ($q) {
-        //         $q->select(['id', 'name']);
-        //     },
-        //     'enrollment.student.image' => function ($q) {
-        //         $q->select(['path']);
-        //     }
-        // ])->whereHas('enrollment', function ($q) use ($course) {
-        //     $q->where('course_id', $course->id);
-        // })->select(['enrollment_id', 'stars', 'content'])->get();
+        $enrollments = $course->studentReviews()->get();
+        $duration = Course::withDuration()->where('courses.id', $course->id)->pluck('duration', 'id');
+        $stars = Course::withStars()->where('courses.id', $course->id)->pluck('stars', 'id');
+        $course = Course::withCount([
+                            'enrollments', 
+                            'enrollments as voters' => function($q){
+                            return $q->has('review');
+                        }])
+                        ->with(['requirements', 'sections.lectures'])
+                        ->where('courses.id', $course->id)->first();
 
-        return Course::withDuration()->paginate(3);
-        // $requirements = $course->requirements;
-        // $reviews = $course->reviewing()->get();
-        // $duration = $course->coursesDuration(false);
-        // $enrollments = $course->enrollments()
-        //                   ->select('id', 'student_id')
-        //                   ->with('review') 
-        //                   ->has('review')
-        //                   ->with('student.image:imageable_id,path')  
-        //                   ->with('student:id,name')
-        //                   ->get();
-        // $courseList= $course->list()->get();
-        
-        
-        // return view('website.course.show', compact( 
-        //                                             'courseList',
-        //                                             'course',
-        //                                             'requirements', 
-        //                                             'enrollments',
-        //                                             'duration',
-        //                                         ));
+        return view('website.course.show', compact( 
+                                                    'enrollments',
+                                                    'duration',
+                                                    'stars',
+                                                    'course'
+                                                ));
     }
 
     /**

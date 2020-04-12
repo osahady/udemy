@@ -11,10 +11,6 @@ class Section extends Model
         'title', 'course_id'
     ];
 
-    // protected $appends = [
-    //     'section_duration'
-    // ];
-
     public function course()
     {
         return $this->belongsTo('App\Course');
@@ -27,7 +23,8 @@ class Section extends Model
 
     public function duration($time)
     {
-        $time = CarbonInterval::seconds($time)->cascade()->format($time>=3600 ? '%hhr %imin' : '%imin');
+        $time = CarbonInterval::seconds($time)->cascade()
+                    ->format($time>=3600 ? '%hhr %imin' : '%imin');
         $time = str_replace(' 0min', '', $time);
         return $time;
     }
@@ -36,9 +33,4 @@ class Section extends Model
     {
         return $this->lectures()->sum('duration');
     }
-
-    // public function getSectionDurationAttribute()
-    // {
-    //     return $this->lectures->sum('duration');
-    // }
 }

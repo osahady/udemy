@@ -3,20 +3,14 @@
 namespace App;
 
 use Carbon\CarbonInterval;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-
     protected $fillable = [
         'title', 'description', 'teacher_id', 'category_id'
     ];
-
-//   protected $appends = [
-//         'course_duration'
-//     ];
 
     public function category()
     {
@@ -43,11 +37,6 @@ class Course extends Model
         return $this->hasMany('App\Enrollment');
     }
 
-    // public function getCourseDurationAttribute()
-    // {
-    //     return $this->sections->sum('section_duration');
-    // }
-
     public function teacher()
     {
         return $this->belongsTo('App\User'); // by convention the name of the foregin
@@ -56,128 +45,49 @@ class Course extends Model
         // <=> teacher_id
     }
 
-    public function list()
+    public function formatDuration($time)
     {
-        return $this->sections()
-                    ->select('id', 'title')
-                    ->withCount('lectures')
-                    ->with('lectures:title,duration,section_id');
-
-    }
-
-    public function showDuration($time)
-    {
-        // $query =
-        // 'SELECT SUM(`lectures`.`duration`)
-        // FROM `lectures`
-        //     INNER JOIN `sections` ON `lectures`.`section_id` = `sections`.`id`
-        //     INNER JOIN `courses` ON `sections`.`course_id` = `courses`.`id`
-        // WHERE courses.id = ?';
-
-        // $d = DB::select($query, $this->id);
-
-
-        $time = CarbonInterval::seconds($time)->cascade()->format($time>=3600 ? '%hhr %imin' : '%imin');
+        $time = CarbonInterval::seconds($time)->cascade()
+                    ->format($time>=3600 ? '%hhr %imin' : '%imin');
         $time = str_replace(' 0min', '', $time);
-        //                             $q->selectRaw('section_id, SUM(duration) AS duration')
-        //                               ->groupBy('section_id');
-        //                         }])
-        //                         // ->selectRaw('SUM(duration) as course_duration')
-        //                         // ->groupBy('')
-        //                         ->get();
+        return $time;
     }
-
-    // public function courseDuration()
-    // {
-    //     return $this->sections()->with(['lectures' => function($q){
-    //                     $q->selectRaw('section_id, SUM(duration) AS d')
-    //                       ->groupBy('section_id');                    
-            
-    //                         }
-    //                         // ,
-    //                         // 'sections' => function($q){
-    //                         //     $q->selectRaw('SUM(d)')
-    //                         //       ->groupBy('course_id');
-    //                         // }
-    //                         ])
-    //                 // ->with(['sections'=> function($q){
-    //                 //     $q->selectRaw('SUM(d)')
-    //                 //       ->groupBy('course_id');
-    //                 // }])
-    //                 ->get();
-
-    //     return $query->with('sections')->where('id', $this->id);
-    // }
 
     public function scopeWithDuration(Builder $query)
     {
-        $query->join('sections', 'sections.course_id', '=', 'courses.id')
-            ->join('lectures', 'lectures.section_id', '=', 'sections.id')
-            ->selectRaw('courses.*, SUM(lectures.duration) AS course_duration')
-            ->groupBy([
-                'courses.id',
-                'courses.teacher_id',
-                'courses.category_id',
-                'courses.title',
-                'courses.description',
-                'courses.created_at',
-                'courses.updated_at'
-            ]);
-    
+        return $query->join('sections', 'sections.course_id', '=', 'courses.id')
+        ->join('lectures', 'lectures.section_id', '=', 'sections.id')
+        ->selectRaw('courses.id, SUM(lectures.duration) AS duration')
+        ->groupBy('courses.id');
     }
 
-    public function rating()
+    public function studentReviews()
     {
-        $rating = DB::table('reviews')
-            ->join('enrollments', 'enrollments.id', '=', 'reviews.enrollment_id')
-            ->join('courses', 'courses.id', '=', 'enrollments.course_id')
-            ->selectRaw('SUM(`reviews`.`stars`) as stars, COUNT(`reviews`.`enrollment_id`) as voters')
-            ->where('courses.id', $this->id)
-            ->first();
+        return $this->enrollments()
+                ->select('id', 'student_id')
+                ->with('review') 
+                ->has('review')
+                ->with('student.image:imageable_id,path')  
+                ->with('student:id,name');         
+    }
 
-        if ($rating->voters != 0) {
-            return [
-                "stars" => $rating->stars,
-                "voters" => $rating->voters,
-                "rating" => $rating->stars / 2 / $rating->voters
+    public function scopeWithStars(Builder $query)
+    {
+        $query
+            ->leftJoin('enrollments', 'enrollments.course_id', '=', 'courses.id')
+            ->leftJoin('reviews', 'reviews.enrollment_id', '=', 'enrollments.id')
+            ->selectRaw('courses.id, 
+                        SUM(reviews.stars) as stars')
+            ->groupBy('courses.id');
+    }
 
-            ];
-        } else {
-            return [
-                "stars" => '',
-                "voters" => '',
-                "rating" => 'No rating yet!'
 
-            ];
+    public function formatRating($stars, $voters)
+    {
+        if ($voters) {
+            return 'stars: '. $stars / 2 / $voters . ' ratings('. $voters . ')';
+        }else{
+            return 'no rating yet!';
         }
-    }
-
-    public function reviewing()
-    {
-        $rating = DB::table('reviews')
-            ->join('enrollments', 'enrollments.id', '=', 'reviews.enrollment_id')
-            ->join('users', 'users.id', '=', 'enrollments.student_id')
-            ->leftJoin('images', function ($join) {
-                $join->on('images.imageable_id', '=', 'users.id')
-                    ->where('images.imageable_type', '=', User::class);
-            })
-            ->select('users.name', 'reviews.content', 'reviews.stars', 'images.path')
-            ->where('enrollments.course_id', $this->id);
-
-        
-            
-        return $rating;
-
-        // $query =
-        // 'SELECT `users`.`name`, `reviews`.`content`, `reviews`.`stars`, `images`.`path`
-        // FROM `reviews`
-        //     INNER JOIN `enrollments` ON (`enrollments`.`id` = `reviews`.`enrollment_id`)
-        //     INNER JOIN `users` ON (`users`.`id` = `enrollments`.`student_id`)
-        //     LEFT JOIN `images` ON (`images`.`imageable_id` = `users`.`id` AND `images`.`imageable_type` LIKE "%User")
-        // WHERE `enrollments`.`course_id` = ?';
-
-        // $reviews = DB::select($query, [$this->id]);
-        // return json_encode($reviews);
-
     }
 }

@@ -2,9 +2,9 @@
 
 @section('content')
 <h2>{{ $course->title }}</h2>
-<small>{{ $duration }}</small> |
-<small>{{ $course->enrollments->count() }}</small> students enrolled  |
-<small>{{ $course->rating()['rating'] }}</small> |
+<small>{{ $course->formatDuration($duration[$course->id]) }}</small> |
+<small>{{ $course->enrollments_count }}</small> students enrolled  |
+<small>{{ $course->formatRating($stars[$course->id], $course->voters) }}</small> |
 <small>{{ $course->teacher->name }}</small> |
 <small>{{ $course->updated_at->format('m/Y') }}</small>
 
@@ -15,7 +15,7 @@
 <hr class="bg-light">
 <h2>Requirements</h2>
 <ol>
-    @foreach ($requirements as $requirement)
+    @foreach ($course->requirements as $requirement)
         <li>{{ $requirement->content }}</li>
     @endforeach
 </ol>
@@ -23,14 +23,16 @@
 <h2>Table of Contents</h2>
 
 <ul>
-@foreach ($courseList as $section)
+@foreach ($course->sections as $section)
     <li>
         <h3>{{ $section->title }} </h3>
+        <small>{{ $section->lectures->count() }}</small> | 
         <small>{{ $section->duration($section->lectures->sum('duration')) }}</small>
         <ul>
             @foreach ($section->lectures as $lecture)
             <li>
                 {{ $lecture->title }}
+                <small>{{ $lecture->duration }}</small>
             </li>
             @endforeach
         </ul>
