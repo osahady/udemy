@@ -17,15 +17,23 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $duration = Course::withDuration()->pluck('duration', 'id');
-        $stars = Course::withStars()->pluck('stars', 'id');
-        $courses = Course::withCount(['enrollments', 
-                            'enrollments as voters' => function($q){
-                                return $q->has('review');
-                            }])->get();
-        return view('website.course.index', compact('duration',
-                                                    'stars',
-                                                    'courses'));
+        $courses = Course::withCount([
+            'enrollments',
+            'enrollments as voters' => function ($q) {
+                return $q->has('review');
+            }
+        ])->paginate(5);
+        $duration = Course::withDuration()
+            ->whereIn('courses.id', $courses->pluck('id'))
+            ->pluck('duration', 'id');
+        $stars = Course::withStars()
+            ->whereIn('courses.id', $courses->pluck('id'))
+            ->pluck('stars', 'id');
+        return view('website.course.index', compact(
+            'duration',
+            'stars',
+            'courses'
+        ));
     }
 
     /**
@@ -63,19 +71,20 @@ class CourseController extends Controller
         $duration = Course::withDuration()->where('courses.id', $course->id)->pluck('duration', 'id');
         $stars = Course::withStars()->where('courses.id', $course->id)->pluck('stars', 'id');
         $course = Course::withCount([
-                            'enrollments', 
-                            'enrollments as voters' => function($q){
-                            return $q->has('review');
-                        }])
-                        ->with(['requirements', 'sections.lectures'])
-                        ->where('courses.id', $course->id)->first();
+            'enrollments',
+            'enrollments as voters' => function ($q) {
+                return $q->has('review');
+            }
+        ])
+            ->with(['requirements', 'sections.lectures'])
+            ->where('courses.id', $course->id)->first();
 
-        return view('website.course.show', compact( 
-                                                    'enrollments',
-                                                    'duration',
-                                                    'stars',
-                                                    'course'
-                                                ));
+        return view('website.course.show', compact(
+            'enrollments',
+            'duration',
+            'stars',
+            'course'
+        ));
     }
 
     /**

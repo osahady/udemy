@@ -48,27 +48,27 @@ class Course extends Model
     public function formatDuration($time)
     {
         $time = CarbonInterval::seconds($time)->cascade()
-                    ->format($time>=3600 ? '%hhr %imin' : '%imin');
+            ->format($time >= 3600 ? '%hhr %imin' : '%imin');
         $time = str_replace(' 0min', '', $time);
         return $time;
     }
 
     public function scopeWithDuration(Builder $query)
     {
-        return $query->join('sections', 'sections.course_id', '=', 'courses.id')
-        ->join('lectures', 'lectures.section_id', '=', 'sections.id')
-        ->selectRaw('courses.id, SUM(lectures.duration) AS duration')
-        ->groupBy('courses.id');
+        $query->join('sections', 'sections.course_id', '=', 'courses.id')
+            ->join('lectures', 'lectures.section_id', '=', 'sections.id')
+            ->selectRaw('courses.*, SUM(lectures.duration) AS duration')
+            ->groupBy('courses.id');
     }
 
     public function studentReviews()
     {
         return $this->enrollments()
-                ->select('id', 'student_id')
-                ->with('review') 
-                ->has('review')
-                ->with('student.image:imageable_id,path')  
-                ->with('student:id,name');         
+            ->select('id', 'student_id')
+            ->with('review')
+            ->has('review')
+            ->with('student.image:imageable_id,path')
+            ->with('student:id,name');
     }
 
     public function scopeWithStars(Builder $query)
@@ -76,7 +76,7 @@ class Course extends Model
         $query
             ->leftJoin('enrollments', 'enrollments.course_id', '=', 'courses.id')
             ->leftJoin('reviews', 'reviews.enrollment_id', '=', 'enrollments.id')
-            ->selectRaw('courses.id, 
+            ->selectRaw('courses.*,
                         SUM(reviews.stars) as stars')
             ->groupBy('courses.id');
     }
@@ -85,8 +85,8 @@ class Course extends Model
     public function formatRating($stars, $voters)
     {
         if ($voters) {
-            return 'stars: '. $stars / 2 / $voters . ' ratings('. $voters . ')';
-        }else{
+            return 'stars: ' . $stars / 2 / $voters . ' ratings(' . $voters . ')';
+        } else {
             return 'no rating yet!';
         }
     }

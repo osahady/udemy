@@ -8,7 +8,7 @@
         <a href="{{ route('courses.show', ['course' => $course->id]) }}">
             {{ $course->title }}
         </a>
-        <small>{{ $course->id }}</small> | 
+        <small>{{ $course->id }}</small> |
         <small>{{ $course->formatDuration($duration[$course->id]) }}</small> (
         <small> {{ $course->formatRating($stars[$course->id], $course->voters) }} </small> )
         <small>{{ $course->enrollments_count }} students enrolled</small>
@@ -21,4 +21,5 @@
     @endforeach
 </ol>
 
+<div>{{ $courses->render() }}</div>
 @endsection
