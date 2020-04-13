@@ -17,12 +17,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::withCount([
-            'enrollments',
-            'enrollments as voters' => function ($q) {
-                return $q->has('review');
-            }
-        ])->withMeta()->paginate(10);
+        $courses = Course::withMeta()->paginate(10);
 
         return view('website.course.index', compact('courses'));
     }
@@ -58,7 +53,6 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        // $enrollments = $course->studentReviews()->get();
         $course = Course::with([
             'requirements',
             'sections.lectures',
@@ -69,10 +63,7 @@ class CourseController extends Controller
             ->withMeta()
             ->where('courses.id', $course->id)->first();
 
-        return view('website.course.show', compact(
-            // 'enrollments',
-            'course'
-        ));
+        return view('website.course.show', compact('course'));
     }
 
     /**
