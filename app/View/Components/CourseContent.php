@@ -6,16 +6,16 @@ use Illuminate\View\Component;
 
 class CourseContent extends Component
 {
-    protected $course;
+    public $sections;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($xyz)
+    public function __construct($sections)
     {
-        $this->course = $xyz;
+        $this->sections = $sections;
     }
 
     /**
@@ -28,8 +28,8 @@ class CourseContent extends Component
         return view('components.course-content');
     }
 
-    public function sections()
-    {
-        return $this->course->sections;
-    }
+    // public function sections()
+    // {
+    //     return $this->course->sections;
+    // }
 }

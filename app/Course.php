@@ -56,12 +56,12 @@ class Course extends Model
             'sections' => function ($q) {
                 $q->join('lectures', 'lectures.section_id', '=', 'sections.id')
                     ->selectRaw('SUM(lectures.duration) as section_duration, sections.*')
-                    ->groupBy('lectures.section_id');
+                    ->groupBy('sections.id');
             },
             'enrollments' => function ($q) {
                 $q->join('reviews', 'reviews.enrollment_id', '=', 'enrollments.id')
-                    ->selectRaw('SUM(reviews.stars) as stars, enrollments.id, enrollments.course_id')
-                    ->groupBy('reviews.enrollment_id');
+                    ->selectRaw('SUM(reviews.stars) as stars, enrollments.*')
+                    ->groupBy('enrollments.id');
             }
         ]);
     }

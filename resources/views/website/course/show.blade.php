@@ -19,34 +19,16 @@
         <li>{{ $requirement->content }}</li>
     @endforeach
 </ol>
+
 <hr class="bg-light">
 <h2>Table of Contents</h2>
-
-{{-- <ul>
-@foreach ($course->sections as $section)
-    <li>
-        <h3>{{ $section->title }} </h3>
-        <small>{{ $section->lectures->count() }}</small> |
-        <small>{{ $section->duration($section->lectures->sum('duration')) }}</small>
-        <ul>
-            @foreach ($section->lectures as $lecture)
-            <li>
-                {{ $lecture->title }}
-                <small>{{ $course->formatDuration($lecture->duration) }}</small>
-            </li>
-            @endforeach
-        </ul>
-    </li>
-@endforeach
-</ul>--}}
-
-<x-course-content :xyz="$course"/>
+<x-course-content :sections="$course->sections"/>
 
 
 <hr class="bg-light">
 <h3>Reviews</h3>
 
-@foreach ($enrollments as $enrollment)
+@foreach ($course->enrollments as $enrollment)
 <div class="row">
     <div class="col-4">
         <h3>{{ $enrollment->student->name }}</h3>

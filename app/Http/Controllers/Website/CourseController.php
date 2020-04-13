@@ -58,13 +58,19 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        $enrollments = $course->studentReviews()->get();
-        $course = Course::with(['requirements', 'sections.lectures'])
+        // $enrollments = $course->studentReviews()->get();
+        $course = Course::with([
+            'requirements',
+            'sections.lectures',
+            'enrollments.review',
+            'enrollments.student.image:imageable_id,path',
+            'enrollments.student:id,name'
+        ])
             ->withMeta()
             ->where('courses.id', $course->id)->first();
 
         return view('website.course.show', compact(
-            'enrollments',
+            // 'enrollments',
             'course'
         ));
     }
