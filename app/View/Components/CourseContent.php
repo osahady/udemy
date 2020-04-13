@@ -27,9 +27,4 @@ class CourseContent extends Component
     {
         return view('components.course-content');
     }
-
-    // public function sections()
-    // {
-    //     return $this->course->sections;
-    // }
 }
