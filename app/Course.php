@@ -45,14 +45,6 @@ class Course extends Model
         // <=> teacher_id
     }
 
-    public function formatDuration($time)
-    {
-        $time = CarbonInterval::seconds($time)->cascade()
-            ->format($time >= 3600 ? '%hhr %imin' : '%imin');
-        $time = str_replace(' 0min', '', $time);
-        return $time;
-    }
-
     public function scopeWithMeta(Builder $query)
     {
         $query->withCount([
@@ -82,14 +74,5 @@ class Course extends Model
             ->has('review')
             ->with('student.image:imageable_id,path')
             ->with('student:id,name');
-    }
-
-    public function formatRating($stars, $voters)
-    {
-        if ($voters) {
-            return 'stars: ' . $stars / 2 / $voters . ' ratings(' . $voters . ')';
-        } else {
-            return 'no rating yet!';
-        }
     }
 }

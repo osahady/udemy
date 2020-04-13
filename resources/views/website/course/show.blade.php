@@ -2,9 +2,9 @@
 
 @section('content')
 <h2>{{ $course->title }}</h2>
-<small>{{ $course->formatDuration($course->sections->sum('section_duration')) }}</small> |
+<small>{{ formatDuration($course->sections->sum('section_duration')) }}</small> |
 <small>{{ $course->enrollments_count }}</small> students enrolled  |
-<small>{{ $course->formatRating($course->enrollments->sum('stars'), $course->voters) }}</small> |
+<small>{{ formatRating($course->enrollments->sum('stars'), $course->voters) }}</small> |
 <small>{{ $course->teacher->name }}</small> |
 <small>{{ $course->updated_at->format('m/Y') }}</small>
 
@@ -22,7 +22,7 @@
 <hr class="bg-light">
 <h2>Table of Contents</h2>
 
-<ul>
+{{-- <ul>
 @foreach ($course->sections as $section)
     <li>
         <h3>{{ $section->title }} </h3>
@@ -38,7 +38,10 @@
         </ul>
     </li>
 @endforeach
-</ul>
+</ul>--}}
+
+<x-course-content :xyz="$course"/>
+
 
 <hr class="bg-light">
 <h3>Reviews</h3>
@@ -70,5 +73,3 @@
     <button class="btn btn-danger">Buy</button>
     <a class="btn btn-info" href="{{ route('courses.edit', ['course' => $course->id]) }}">Edit</a>
 @endsection
-
-

@@ -9,8 +9,8 @@
             {{ $course->title }}
         </a>
         <small>{{ $course->id }}</small> |
-        <small>{{ $course->formatDuration($course->sections->sum('section_duration')) }}</small> (
-        <small> {{ $course->formatRating($course->enrollments->sum('stars'), $course->voters) }} </small> )
+        <small>{{ formatDuration($course->sections->sum('section_duration')) }}</small> (
+        <small> {{ formatRating($course->enrollments->sum('stars'), $course->voters) }} </small> )
         <small>{{ $course->enrollments_count }} students enrolled</small>
         <form action="{{ route('courses.destroy', $course->id) }}" method="POST">
             @csrf @method('DELETE')
