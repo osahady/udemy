@@ -22,18 +22,9 @@ class CourseController extends Controller
             'enrollments as voters' => function ($q) {
                 return $q->has('review');
             }
-        ])->paginate(5);
-        $duration = Course::withDuration()
-            ->whereIn('courses.id', $courses->pluck('id'))
-            ->pluck('duration', 'id');
-        $stars = Course::withStars()
-            ->whereIn('courses.id', $courses->pluck('id'))
-            ->pluck('stars', 'id');
-        return view('website.course.index', compact(
-            'duration',
-            'stars',
-            'courses'
-        ));
+        ])->withMeta()->paginate(10);
+
+        return view('website.course.index', compact('courses'));
     }
 
     /**
@@ -68,21 +59,12 @@ class CourseController extends Controller
     public function show(Course $course)
     {
         $enrollments = $course->studentReviews()->get();
-        $duration = Course::withDuration()->where('courses.id', $course->id)->pluck('duration', 'id');
-        $stars = Course::withStars()->where('courses.id', $course->id)->pluck('stars', 'id');
-        $course = Course::withCount([
-            'enrollments',
-            'enrollments as voters' => function ($q) {
-                return $q->has('review');
-            }
-        ])
-            ->with(['requirements', 'sections.lectures'])
+        $course = Course::with(['requirements', 'sections.lectures'])
+            ->withMeta()
             ->where('courses.id', $course->id)->first();
 
         return view('website.course.show', compact(
             'enrollments',
-            'duration',
-            'stars',
             'course'
         ));
     }

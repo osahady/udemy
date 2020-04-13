@@ -53,12 +53,25 @@ class Course extends Model
         return $time;
     }
 
-    public function scopeWithDuration(Builder $query)
+    public function scopeWithMeta(Builder $query)
     {
-        $query->join('sections', 'sections.course_id', '=', 'courses.id')
-            ->join('lectures', 'lectures.section_id', '=', 'sections.id')
-            ->selectRaw('courses.*, SUM(lectures.duration) AS duration')
-            ->groupBy('courses.id');
+        $query->withCount([
+            'enrollments',
+            'enrollments as voters' => function ($q) {
+                return $q->has('review');
+            }
+        ])->with([
+            'sections' => function ($q) {
+                $q->join('lectures', 'lectures.section_id', '=', 'sections.id')
+                    ->selectRaw('SUM(lectures.duration) as section_duration, sections.*')
+                    ->groupBy('lectures.section_id');
+            },
+            'enrollments' => function ($q) {
+                $q->join('reviews', 'reviews.enrollment_id', '=', 'enrollments.id')
+                    ->selectRaw('SUM(reviews.stars) as stars, enrollments.id, enrollments.course_id')
+                    ->groupBy('reviews.enrollment_id');
+            }
+        ]);
     }
 
     public function studentReviews()
@@ -70,17 +83,6 @@ class Course extends Model
             ->with('student.image:imageable_id,path')
             ->with('student:id,name');
     }
-
-    public function scopeWithStars(Builder $query)
-    {
-        $query
-            ->leftJoin('enrollments', 'enrollments.course_id', '=', 'courses.id')
-            ->leftJoin('reviews', 'reviews.enrollment_id', '=', 'enrollments.id')
-            ->selectRaw('courses.*,
-                        SUM(reviews.stars) as stars')
-            ->groupBy('courses.id');
-    }
-
 
     public function formatRating($stars, $voters)
     {

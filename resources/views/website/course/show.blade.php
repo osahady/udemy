@@ -2,9 +2,9 @@
 
 @section('content')
 <h2>{{ $course->title }}</h2>
-<small>{{ $course->formatDuration($duration[$course->id]) }}</small> |
+<small>{{ $course->formatDuration($course->sections->sum('section_duration')) }}</small> |
 <small>{{ $course->enrollments_count }}</small> students enrolled  |
-<small>{{ $course->formatRating($stars[$course->id], $course->voters) }}</small> |
+<small>{{ $course->formatRating($course->enrollments->sum('stars'), $course->voters) }}</small> |
 <small>{{ $course->teacher->name }}</small> |
 <small>{{ $course->updated_at->format('m/Y') }}</small>
 
@@ -26,13 +26,13 @@
 @foreach ($course->sections as $section)
     <li>
         <h3>{{ $section->title }} </h3>
-        <small>{{ $section->lectures->count() }}</small> | 
+        <small>{{ $section->lectures->count() }}</small> |
         <small>{{ $section->duration($section->lectures->sum('duration')) }}</small>
         <ul>
             @foreach ($section->lectures as $lecture)
             <li>
                 {{ $lecture->title }}
-                <small>{{ $lecture->duration }}</small>
+                <small>{{ $course->formatDuration($lecture->duration) }}</small>
             </li>
             @endforeach
         </ul>
@@ -54,7 +54,7 @@
         <div class="progress">
             <div class="progress-bar progress-bar-striped" style="width:{{ $enrollment->review->stars * 10 }}%"></div>
         </div>
-        
+
         <p class="lead">
             {{ $enrollment->review->content }}
         </p>
@@ -72,4 +72,3 @@
 @endsection
 
 
-    
